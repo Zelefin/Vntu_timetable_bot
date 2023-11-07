@@ -233,6 +233,6 @@ dmypy.json
 cython_debug/
 
 
-ScrapItUp/Groups/*
-ScrapItUp/Groups_html/*
-ScrapItUp/Groups_json/*
+ScrapItUp/Groups/**
+ScrapItUp/Groups_html/**
+ScrapItUp/Groups_json/**
