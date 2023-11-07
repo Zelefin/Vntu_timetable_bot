@@ -232,3 +232,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+
+ScrapItUp/Groups/*
+ScrapItUp/Groups_html/*
+ScrapItUp/Groups_json/*
