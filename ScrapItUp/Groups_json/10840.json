@@ -1,0 +1,940 @@
+{
+    "current_week_dict": {
+        "week_info": "2 (10) тиждень",
+        "Пн": {
+            "DayDate": "06.11",
+            "DayNameLong": "Понеділок",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2135а",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2135а",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "2": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "2430",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "3": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2430",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            }
+        },
+        "Вт": {
+            "DayDate": "07.11",
+            "DayNameLong": "Вівторок",
+            "0": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Клєопа І.А.",
+                "TeacherFullName": "Клєопа Ірина Анатоліївна",
+                "LessonCabinet": "2313",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "1": {
+                "LessonName": "Групова динаміка і комунікації",
+                "TeacherShortName": "Круподьорова Л.М.",
+                "TeacherFullName": "Круподьорова Людмила Михайлівна",
+                "LessonCabinet": "1411",
+                "LessonType": "ЛК",
+                "DisciplineId": 1744,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "2": {
+                "LessonName": "Групова динаміка і комунікації",
+                "TeacherShortName": "Круподьорова Л.М.",
+                "TeacherFullName": "Круподьорова Людмила Михайлівна",
+                "LessonCabinet": "1411",
+                "LessonType": "ЛК",
+                "DisciplineId": 1744,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "3": {
+                "LessonName": "Вступ до фаху",
+                "TeacherShortName": "Романюк О.Н.",
+                "TeacherFullName": "Романюк Олександр Никифорович",
+                "LessonCabinet": "2221",
+                "LessonType": "ЛК",
+                "DisciplineId": 1567,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "4": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2203",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            },
+            "5": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2203",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 8,
+                "StartAt": "15:10",
+                "EndAt": "15:55"
+            }
+        },
+        "Ср": {
+            "DayDate": "08.11",
+            "DayNameLong": "Середа",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2431",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2431",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Клєопа І.А.",
+                "TeacherFullName": "Клєопа Ірина Анатоліївна",
+                "LessonCabinet": "2316",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": "Вступ до фаху",
+                "TeacherShortName": "Мельник О.В.",
+                "TeacherFullName": "Мельник Олександр Васильович",
+                "LessonCabinet": "2316",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1567,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Іноземна мова ",
+                "TeacherShortName": "Кот С.О.",
+                "TeacherFullName": "Кот Сергій Олександрович",
+                "LessonCabinet": "3413",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1777,
+                "LessonSubgroup": 1,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Іноземна мова ",
+                "TeacherShortName": "Кот С.О.",
+                "TeacherFullName": "Кот Сергій Олександрович",
+                "LessonCabinet": "3413",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1777,
+                "LessonSubgroup": 1,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "6": {
+                "LessonName": "Історія та культура України",
+                "TeacherShortName": "Герасимов Т.Ю.",
+                "TeacherFullName": "Герасимов Тимофій Юрійович",
+                "LessonCabinet": "5128",
+                "LessonType": "ЛК",
+                "DisciplineId": 4322,
+                "LessonSubgroup": 0,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            }
+        },
+        "Чт": {
+            "DayDate": "09.11",
+            "DayNameLong": "Четвер",
+            "0": {
+                "LessonName": "Фізична культура",
+                "TeacherShortName": "Тихонов В.К.",
+                "TeacherFullName": "Тихонов Володимир Костянтинович",
+                "LessonCabinet": "спортзал",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1583,
+                "LessonSubgroup": 0,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Фізична культура",
+                "TeacherShortName": "Тихонов В.К.",
+                "TeacherFullName": "Тихонов Володимир Костянтинович",
+                "LessonCabinet": "спортзал",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1583,
+                "LessonSubgroup": 0,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": [
+                    "Методи та засоби перетворення інформації",
+                    "Групова динаміка і комунікації"
+                ],
+                "TeacherShortName": [
+                    "Вишневська Н.С.",
+                    "Круподьорова Л.М."
+                ],
+                "TeacherFullName": [
+                    "Вишневська Ніна Серафимівна",
+                    "Круподьорова Людмила Михайлівна"
+                ],
+                "LessonCabinet": [
+                    "4218",
+                    "2129"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ЛР"
+                ],
+                "DisciplineId": 1744,
+                "LessonSubgroup": -1,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": [
+                    "Методи та засоби перетворення інформації",
+                    "Групова динаміка і комунікації"
+                ],
+                "TeacherShortName": [
+                    "Вишневська Н.С.",
+                    "Круподьорова Л.М."
+                ],
+                "TeacherFullName": [
+                    "Вишневська Ніна Серафимівна",
+                    "Круподьорова Людмила Михайлівна"
+                ],
+                "LessonCabinet": [
+                    "4218",
+                    "2129"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ЛР"
+                ],
+                "DisciplineId": 1744,
+                "LessonSubgroup": -1,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Кухарчук В.В.",
+                "TeacherFullName": "Кухарчук Василь Васильович",
+                "LessonCabinet": "4228",
+                "LessonType": "ЛК",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Кухарчук В.В.",
+                "TeacherFullName": "Кухарчук Василь Васильович",
+                "LessonCabinet": "4228",
+                "LessonType": "ЛК",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "6": {
+                "LessonName": [
+                    "Основи програмування",
+                    "Іноземна мова "
+                ],
+                "TeacherShortName": [
+                    "Стахов О.Я.",
+                    "Чопляк В.В."
+                ],
+                "TeacherFullName": [
+                    "Стахов Олексій Ярославович",
+                    "Чопляк Вікторія Володимирівна"
+                ],
+                "LessonCabinet": [
+                    "2126",
+                    "2304а"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ПЗ"
+                ],
+                "DisciplineId": 1777,
+                "LessonSubgroup": -1,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            },
+            "7": {
+                "LessonName": [
+                    "Основи програмування",
+                    "Іноземна мова "
+                ],
+                "TeacherShortName": [
+                    "Стахов О.Я.",
+                    "Чопляк В.В."
+                ],
+                "TeacherFullName": [
+                    "Стахов Олексій Ярославович",
+                    "Чопляк Вікторія Володимирівна"
+                ],
+                "LessonCabinet": [
+                    "2126",
+                    "2304а"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ПЗ"
+                ],
+                "DisciplineId": 1777,
+                "LessonSubgroup": -1,
+                "LessonNumber": 8,
+                "StartAt": "15:10",
+                "EndAt": "15:55"
+            }
+        },
+        "Пт": {
+            "DayDate": "10.11",
+            "DayNameLong": "П'ятниця",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "1416",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "1416",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "1421",
+                "LessonType": "ПЗ",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": "Вступ до фаху",
+                "TeacherShortName": "Мельник О.В.",
+                "TeacherFullName": "Мельник Олександр Васильович",
+                "LessonCabinet": "1421",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1567,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Вишневська Н.С.",
+                "TeacherFullName": "Вишневська Ніна Серафимівна",
+                "LessonCabinet": "4218",
+                "LessonType": "ЛР",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 2,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Історія та культура України",
+                "TeacherShortName": "Сідлецька Т.І.",
+                "TeacherFullName": "Сідлецька Тетяна Іванівна",
+                "LessonCabinet": "2166",
+                "LessonType": "ПЗ",
+                "DisciplineId": 4322,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            }
+        },
+        "Сб": {
+            "DayDate": "11.11",
+            "DayNameLong": "Субота"
+        },
+        "Нд": {
+            "DayDate": "12.11",
+            "DayNameLong": "Неділя"
+        }
+    },
+    "next_week_dict": {
+        "week_info": "1 (11) тиждень",
+        "Пн": {
+            "DayDate": "13.11",
+            "DayNameLong": "Понеділок",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2135а",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 1,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2135а",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 1,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "2": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "2430",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "3": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2430",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            }
+        },
+        "Вт": {
+            "DayDate": "14.11",
+            "DayNameLong": "Вівторок",
+            "0": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Клєопа І.А.",
+                "TeacherFullName": "Клєопа Ірина Анатоліївна",
+                "LessonCabinet": "2313",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "1": {
+                "LessonName": "Вступ до фаху",
+                "TeacherShortName": "Романюк О.Н.",
+                "TeacherFullName": "Романюк Олександр Никифорович",
+                "LessonCabinet": "1411",
+                "LessonType": "ЛК",
+                "DisciplineId": 1567,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "2": {
+                "LessonName": "Групова динаміка і комунікації",
+                "TeacherShortName": "Круподьорова Л.М.",
+                "TeacherFullName": "Круподьорова Людмила Михайлівна",
+                "LessonCabinet": "1411",
+                "LessonType": "ЛК",
+                "DisciplineId": 1744,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "3": {
+                "LessonName": "Вступ до фаху",
+                "TeacherShortName": "Романюк О.Н.",
+                "TeacherFullName": "Романюк Олександр Никифорович",
+                "LessonCabinet": "2221",
+                "LessonType": "ЛК",
+                "DisciplineId": 1567,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "4": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2203",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            },
+            "5": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Прозор О.П.",
+                "TeacherFullName": "Прозор Олена Петрівна",
+                "LessonCabinet": "2203",
+                "LessonType": "ЛК",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 8,
+                "StartAt": "15:10",
+                "EndAt": "15:55"
+            }
+        },
+        "Ср": {
+            "DayDate": "15.11",
+            "DayNameLong": "Середа",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2431",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "2431",
+                "LessonType": "ЛР",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 2,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Клєопа І.А.",
+                "TeacherFullName": "Клєопа Ірина Анатоліївна",
+                "LessonCabinet": "2316",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": "Вища математика",
+                "TeacherShortName": "Клєопа І.А.",
+                "TeacherFullName": "Клєопа Ірина Анатоліївна",
+                "LessonCabinet": "2316",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1560,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Іноземна мова ",
+                "TeacherShortName": "Кот С.О.",
+                "TeacherFullName": "Кот Сергій Олександрович",
+                "LessonCabinet": "3413",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1777,
+                "LessonSubgroup": 1,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Іноземна мова ",
+                "TeacherShortName": "Кот С.О.",
+                "TeacherFullName": "Кот Сергій Олександрович",
+                "LessonCabinet": "3413",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1777,
+                "LessonSubgroup": 1,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "6": {
+                "LessonName": "Історія та культура України",
+                "TeacherShortName": "Герасимов Т.Ю.",
+                "TeacherFullName": "Герасимов Тимофій Юрійович",
+                "LessonCabinet": "5128",
+                "LessonType": "ЛК",
+                "DisciplineId": 4322,
+                "LessonSubgroup": 0,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            },
+            "7": {
+                "LessonName": "Історія та культура України",
+                "TeacherShortName": "Герасимов Т.Ю.",
+                "TeacherFullName": "Герасимов Тимофій Юрійович",
+                "LessonCabinet": "5128",
+                "LessonType": "ЛК",
+                "DisciplineId": 4322,
+                "LessonSubgroup": 0,
+                "LessonNumber": 8,
+                "StartAt": "15:10",
+                "EndAt": "15:55"
+            }
+        },
+        "Чт": {
+            "DayDate": "16.11",
+            "DayNameLong": "Четвер",
+            "0": {
+                "LessonName": "Фізична культура",
+                "TeacherShortName": "Тихонов В.К.",
+                "TeacherFullName": "Тихонов Володимир Костянтинович",
+                "LessonCabinet": "спортзал",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1583,
+                "LessonSubgroup": 0,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Фізична культура",
+                "TeacherShortName": "Тихонов В.К.",
+                "TeacherFullName": "Тихонов Володимир Костянтинович",
+                "LessonCabinet": "спортзал",
+                "LessonType": "ПЗ",
+                "DisciplineId": 1583,
+                "LessonSubgroup": 0,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": [
+                    "Групова динаміка і комунікації",
+                    "Методи та засоби перетворення інформації"
+                ],
+                "TeacherShortName": [
+                    "Круподьорова Л.М.",
+                    "Вишневська Н.С."
+                ],
+                "TeacherFullName": [
+                    "Круподьорова Людмила Михайлівна",
+                    "Вишневська Ніна Серафимівна"
+                ],
+                "LessonCabinet": [
+                    "2129",
+                    "4218"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ЛР"
+                ],
+                "DisciplineId": 4364,
+                "LessonSubgroup": -1,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": [
+                    "Групова динаміка і комунікації",
+                    "Методи та засоби перетворення інформації"
+                ],
+                "TeacherShortName": [
+                    "Круподьорова Л.М.",
+                    "Вишневська Н.С."
+                ],
+                "TeacherFullName": [
+                    "Круподьорова Людмила Михайлівна",
+                    "Вишневська Ніна Серафимівна"
+                ],
+                "LessonCabinet": [
+                    "2129",
+                    "4218"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ЛР"
+                ],
+                "DisciplineId": 4364,
+                "LessonSubgroup": -1,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Кухарчук В.В.",
+                "TeacherFullName": "Кухарчук Василь Васильович",
+                "LessonCabinet": "4228",
+                "LessonType": "ЛК",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 0,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Кухарчук В.В.",
+                "TeacherFullName": "Кухарчук Василь Васильович",
+                "LessonCabinet": "4228",
+                "LessonType": "ЛК",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            },
+            "6": {
+                "LessonName": [
+                    "Основи програмування",
+                    "Іноземна мова "
+                ],
+                "TeacherShortName": [
+                    "Стахов О.Я.",
+                    "Чопляк В.В."
+                ],
+                "TeacherFullName": [
+                    "Стахов Олексій Ярославович",
+                    "Чопляк Вікторія Володимирівна"
+                ],
+                "LessonCabinet": [
+                    "2126",
+                    "2304а"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ПЗ"
+                ],
+                "DisciplineId": 1777,
+                "LessonSubgroup": -1,
+                "LessonNumber": 7,
+                "StartAt": "14:15",
+                "EndAt": "15:00"
+            },
+            "7": {
+                "LessonName": [
+                    "Основи програмування",
+                    "Іноземна мова "
+                ],
+                "TeacherShortName": [
+                    "Стахов О.Я.",
+                    "Чопляк В.В."
+                ],
+                "TeacherFullName": [
+                    "Стахов Олексій Ярославович",
+                    "Чопляк Вікторія Володимирівна"
+                ],
+                "LessonCabinet": [
+                    "2126",
+                    "2304а"
+                ],
+                "LessonType": [
+                    "ЛР",
+                    "ПЗ"
+                ],
+                "DisciplineId": 1777,
+                "LessonSubgroup": -1,
+                "LessonNumber": 8,
+                "StartAt": "15:10",
+                "EndAt": "15:55"
+            }
+        },
+        "Пт": {
+            "DayDate": "17.11",
+            "DayNameLong": "П'ятниця",
+            "0": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "1416",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 1,
+                "StartAt": "8:15",
+                "EndAt": "9:00"
+            },
+            "1": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Ткаченко О.М.",
+                "TeacherFullName": "Ткаченко Олександр Миколайович",
+                "LessonCabinet": "1416",
+                "LessonType": "ЛК",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 2,
+                "StartAt": "9:15",
+                "EndAt": "10:00"
+            },
+            "2": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "1421",
+                "LessonType": "ПЗ",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 3,
+                "StartAt": "10:15",
+                "EndAt": "11:00"
+            },
+            "3": {
+                "LessonName": "Основи програмування",
+                "TeacherShortName": "Стахов О.Я.",
+                "TeacherFullName": "Стахов Олексій Ярославович",
+                "LessonCabinet": "1421",
+                "LessonType": "ПЗ",
+                "DisciplineId": 2045,
+                "LessonSubgroup": 0,
+                "LessonNumber": 4,
+                "StartAt": "11:15",
+                "EndAt": "12:00"
+            },
+            "4": {
+                "LessonName": "Методи та засоби перетворення інформації",
+                "TeacherShortName": "Вишневська Н.С.",
+                "TeacherFullName": "Вишневська Ніна Серафимівна",
+                "LessonCabinet": "4218",
+                "LessonType": "ЛР",
+                "DisciplineId": 4364,
+                "LessonSubgroup": 1,
+                "LessonNumber": 5,
+                "StartAt": "12:15",
+                "EndAt": "13:00"
+            },
+            "5": {
+                "LessonName": "Історія та культура України",
+                "TeacherShortName": "Сідлецька Т.І.",
+                "TeacherFullName": "Сідлецька Тетяна Іванівна",
+                "LessonCabinet": "2166",
+                "LessonType": "ПЗ",
+                "DisciplineId": 4322,
+                "LessonSubgroup": 0,
+                "LessonNumber": 6,
+                "StartAt": "13:15",
+                "EndAt": "14:00"
+            }
+        },
+        "Сб": {
+            "DayDate": "18.11",
+            "DayNameLong": "Субота"
+        },
+        "Нд": {
+            "DayDate": "19.11",
+            "DayNameLong": "Неділя"
+        }
+    }
+}
