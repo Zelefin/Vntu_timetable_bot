@@ -11,8 +11,8 @@ class Group(BaseModel):
     user_id = Column(Integer, unique=True, nullable=False, primary_key=True)
 
     # Group and subgroup
-    group = Column(VARCHAR(32), unique=False, nullable=False)
-    subgroup = Column(VARCHAR(32), unique=False, nullable=False)
+    group = Column(Integer, unique=False, nullable=False)
+    subgroup = Column(Integer, unique=False, nullable=False)
 
     # Reg Date
     reg_date = Column(DATE, default=datetime.date.today())

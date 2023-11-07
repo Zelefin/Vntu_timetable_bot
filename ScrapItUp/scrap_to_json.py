@@ -4,22 +4,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 import json
 
+from ScrapItUp.ids_dict import groups_ids
+
 
 PATH = Path.cwd()
 
 if PATH.name == "bot":
     PATH = PATH.parent
-
-
-groups_ids = {
-    "1ПІ-23б": "10679",
-    "2ПІ-23б": "10680",
-    "3ПІ-23б": "10681",
-    "4ПІ-23б": "10682",
-    "5ПІ-23б": "10839",
-    "6ПІ-23б": "10840"
-}
-
 
 daysLongNames = {
     "Пн": "Понеділок",

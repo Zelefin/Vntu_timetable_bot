@@ -5,6 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram import F
 
+from ScrapItUp import groups_ids
 from bot.phrases import groups, subgroups, days
 from bot.phrases import start_phrases
 from bot.Groups_func import send_lessons
@@ -42,7 +43,7 @@ async def command_start_handler(message: Message, state: FSMContext, user_info: 
     F.text.in_(groups)
 )
 async def group_chosen(message: Message, state: FSMContext):
-    await state.update_data(group=message.text)
+    await state.update_data(group=groups_ids[message.text])
     await message.answer(
         text=start_phrases["choose_subgroup"],
         reply_markup=subgroups_kb(subgroups)
@@ -65,7 +66,7 @@ async def group_chosen_incorrectly(message: Message):
     F.text.in_(subgroups)
 )
 async def subgroup_chosen(message: Message, state: FSMContext):
-    await state.update_data(subgroup=message.text)
+    await state.update_data(subgroup=message.text[0])
     await message.answer(
         text=start_phrases["choose_day"],
         reply_markup=days_kb(days)

@@ -5,6 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram import F
 
+from ScrapItUp import groups_ids
 from bot.phrases import groups, subgroups, reg_phrases
 from bot.db import add_user
 from bot.middlewares import RegistrationMessageMiddleware
@@ -32,7 +33,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     F.text.in_(groups)
 )
 async def group_chosen(message: Message, state: FSMContext):
-    await state.update_data(chosen_group=message.text)
+    await state.update_data(chosen_group=groups_ids[message.text], chosen_group_text=message.text)
     await message.answer(
         text=reg_phrases["choose_subgroup"],
         reply_markup=subgroups_kb(subgroups)
@@ -55,14 +56,15 @@ async def group_chosen_incorrectly(message: Message):
     F.text.in_(subgroups)
 )
 async def subgroup_chosen(message: Message, state: FSMContext, session_maker):
-    chosen_group = await state.get_data()
-    chosen_group = chosen_group['chosen_group']
-    chosen_subgroup = message.text
+    user_info = await state.get_data()
+    chosen_group = int(user_info['chosen_group'])
+    chosen_group_text = user_info['chosen_group_text']
+    chosen_subgroup = int(message.text[0])
 
     if await add_user(session_maker, message.from_user.id, chosen_group, chosen_subgroup):
         await message.answer(
             text=reg_phrases["sucsessful"].format(
-                g=chosen_group, s=chosen_subgroup),
+                g=chosen_group_text, s=chosen_subgroup),
             reply_markup=ReplyKeyboardRemove()
         )
     else:

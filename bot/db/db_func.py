@@ -19,7 +19,7 @@ async def check_user(session_maker: async_sessionmaker, uid: int) -> dict | None
                 return
 
 
-async def add_user(session_maker: async_sessionmaker, uid: int, group: str, subgroup: str) -> bool:
+async def add_user(session_maker: async_sessionmaker, uid: int, group: int, subgroup: int) -> bool:
     async with session_maker() as session:
         async with session.begin():
             session: AsyncSession

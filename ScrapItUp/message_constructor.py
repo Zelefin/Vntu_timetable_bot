@@ -1,21 +1,13 @@
 import json
 from pathlib import Path
 
+from ScrapItUp.ids_dict import groups_ids
+
 
 PATH = Path.cwd()
 
 if PATH.name == "bot":
     PATH = PATH.parent
-
-
-groups_ids = {
-    "1ПІ-23б": "10679",
-    "2ПІ-23б": "10680",
-    "3ПІ-23б": "10681",
-    "4ПІ-23б": "10682",
-    "5ПІ-23б": "10839",
-    "6ПІ-23б": "10840"
-}
 
 nameDaysShort = ["Пн", "Вт", "Ср", "Чт", "Пт"]
 
@@ -125,21 +117,19 @@ def week_construct(week: str) -> None:
         with open(f'{PATH}/ScrapItUp/Groups_json/{group_id}.json', 'r') as json_file:
             json_data = json.load(json_file)
 
-        group_num = key[:-6]
-
         current_week = constructor(json_data[week])
 
         week_num = json_data[week]['week_info'][0]
 
         i = 1
         for day in current_week[0]:
-            with open(f'{PATH}/ScrapItUp/Groups/{week_num}/{group_num}/{i}/IP1.txt', 'w') as f:
+            with open(f'{PATH}/ScrapItUp/Groups/{group_id}/{week_num}/{i}/IP1.txt', 'w') as f:
                 f.write(f"> {key}, 1 Підгрупа\n" + day)
             i += 1
 
         i = 1
         for day in current_week[1]:
-            with open(f'{PATH}/ScrapItUp/Groups/{week_num}/{group_num}/{i}/IP2.txt', 'w') as f:
+            with open(f'{PATH}/ScrapItUp/Groups/{group_id}/{week_num}/{i}/IP2.txt', 'w') as f:
                 f.write(f"> {key}, 2 Підгрупа\n" + day)
             i += 1
 

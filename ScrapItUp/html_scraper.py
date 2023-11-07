@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 import requests
 from bs4 import BeautifulSoup
 
+from ScrapItUp.ids_dict import groups_ids
+
+
 PATH = Path.cwd()
 
 if PATH.name == "bot":
@@ -60,14 +63,6 @@ def generate_html():
 
     # ????
     # * PROFIT!!
-    groups_ids = {
-        "1ПІ-23б": "10679",
-        "2ПІ-23б": "10680",
-        "3ПІ-23б": "10681",
-        "4ПІ-23б": "10682",
-        "5ПІ-23б": "10839",
-        "6ПІ-23б": "10840"
-    }
 
     for key, group_id in groups_ids.items():
         response2 = session.post(
