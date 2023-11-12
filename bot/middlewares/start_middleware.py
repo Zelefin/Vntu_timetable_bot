@@ -2,7 +2,7 @@ from typing import Callable, Dict, Any, Awaitable
 
 from aiogram import BaseMiddleware
 from aiogram.types import Message
-from bot.db import check_user, check_user_vis, add_user_vis
+from bot.db.db_functions import check_user, check_user_vis, add_user_vis
 from bot.phrases import start_midlwr_phrases
 
 

@@ -7,6 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
 from dotenv import load_dotenv
 from sqlalchemy.engine import URL
+from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -16,7 +17,8 @@ from bot.handlers import routers
 from bot.phrases import bot_commands
 from bot.db import create_async_engine, get_session_maker
 from bot.phrases import admin_id
-from ScrapItUp import scrapitup_main
+from ScrapItUp import scrapitup_main, main_parsing_to_db
+from bot.scheduled_lesson_reminder import remind_collector
 
 
 async def main() -> None:
@@ -37,11 +39,11 @@ async def main() -> None:
 
     postgres_url = URL.create(
         drivername="postgresql+asyncpg",
-        username=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host="localhost",
-        port=os.getenv("DB_PORT"),
-        database=os.getenv("DB_NAME")
+        username=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        host=os.getenv("POSTGRES_HOST"),
+        port=os.getenv("POSTGRES_PORT"),
+        database=os.getenv("POSTGRES_DB")
     )
 
     async_engine = create_async_engine(postgres_url)
@@ -51,7 +53,11 @@ async def main() -> None:
     # Scheduler for updating timetable
     scheduler = AsyncIOScheduler(timezone="Europe/Kyiv")
     scheduler.add_job(scheduled_update, trigger='cron', hour=3, minute=0, start_date=datetime.now(),
-                      kwargs={"bot": bot})
+                      kwargs={"bot": bot, "session_maker": session_maker})
+    scheduler.add_job(scheduled_update, trigger='cron', hour=5, minute=0, start_date=datetime.now(),
+                      kwargs={"bot": bot, "session_maker": session_maker})
+    scheduler.add_job(remind_collector, trigger='interval', seconds=60,
+                      kwargs={"bot": bot, "session_maker": session_maker})
     scheduler.start()
 
     # Видалимо усі вхідні месседжи
@@ -59,9 +65,11 @@ async def main() -> None:
     await dp.start_polling(bot, session_maker=session_maker)
 
 
-async def scheduled_update(bot: Bot):
+async def scheduled_update(bot: Bot, session_maker: async_sessionmaker):
     try:
         scrapitup_main()
+        await bot.send_message(chat_id=admin_id, text="Txt files updated.")
+        await main_parsing_to_db(session_maker)
         await bot.send_message(chat_id=admin_id, text="Timetable successfully updated!")
     except Exception as e:
         print(e)

@@ -3,19 +3,19 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import Message
 
-from bot.db.db_functions import select_all_users
-from bot.phrases import admin_id
+from bot.db.db_functions import check_role
 
 
-class MailingMessageMiddleware(BaseMiddleware):
+class LinksMessageMiddleware(BaseMiddleware):
     async def __call__(
         self,
         handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
         event: Message,
         data: Dict[str, Any]
     ) -> Any:
-        if event.from_user.id == admin_id:  # Admins id
-            data['users_ids'] = await select_all_users(data['session_maker'])
+        check = await check_role(data['session_maker'], event.from_user.id)
+        if check:
+            data['president_group'] = check
             return await handler(event, data)
         else:
             pass

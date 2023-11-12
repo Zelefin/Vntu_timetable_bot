@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from bot.db import delete_user
+from bot.db.db_functions import delete_user
 from bot.phrases import del_phrases
 
 delete_me_router = Router(name='delete_me')

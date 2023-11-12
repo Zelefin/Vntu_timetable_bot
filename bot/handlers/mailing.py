@@ -7,7 +7,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 from bot.middlewares import MailingMessageMiddleware
-from bot.db import delete_user, delete_vis_user
+from bot.db.db_functions import delete_user, delete_vis_user
 
 
 class SendMail(StatesGroup):
@@ -15,7 +15,7 @@ class SendMail(StatesGroup):
     confirm_sending = State()
 
 
-mailing_router = Router(name='start')
+mailing_router = Router(name='mailing')
 mailing_router.message.middleware(MailingMessageMiddleware())
 
 

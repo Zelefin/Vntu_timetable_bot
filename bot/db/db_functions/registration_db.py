@@ -1,9 +1,7 @@
-from typing import Any
-
 from sqlalchemy.ext.asyncio import async_sessionmaker
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update, true
 from sqlalchemy.ext.asyncio import AsyncSession
-from .groups_db import Group, Visited
+from bot.db.groups_db import Group
 
 
 async def check_user(session_maker: async_sessionmaker, uid: int) -> dict | None:
@@ -14,7 +12,7 @@ async def check_user(session_maker: async_sessionmaker, uid: int) -> dict | None
             user = result.one_or_none()
 
             if user:
-                return {'group': user[0].group, 'subgroup': user[0].subgroup}
+                return {'group': user[0].group, 'subgroup': user[0].subgroup, 'notify': user[0].notify}
             else:
                 return
 
@@ -49,57 +47,43 @@ async def delete_user(session_maker: async_sessionmaker, uid: int) -> bool:
                 await session.execute(delete(Group).where(Group.user_id == uid))
                 return True
             except Exception as e:
-                print("#"*20)
+                print("#" * 20)
                 print(e)
-                print("#"*20)
+                print("#" * 20)
                 return False
 
 
-async def check_user_vis(session_maker: async_sessionmaker, uid: int) -> bool:
+async def notify_user(session_maker: async_sessionmaker, uid: int) -> bool:
     async with session_maker() as session:
         async with session.begin():
             session: AsyncSession
-            result = await session.execute(select(Visited).where(Visited.user_id == uid))
+
+            result = await session.execute(select(Group).where(Group.user_id == uid))
             user = result.one_or_none()
 
             if user:
+                await session.execute(update(Group).where(Group.user_id == uid).values(notify=not user[0].notify))
+                await session.commit()
                 return True
             else:
                 return False
 
 
-async def add_user_vis(session_maker: async_sessionmaker, uid: int) -> None:
+async def get_users_to_notify(session_maker: async_sessionmaker,
+                              group_id: int, subgroup: int) -> list:
     async with session_maker() as session:
         async with session.begin():
             session: AsyncSession
 
-            user = Visited(user_id=uid)
-            await session.merge(user)
+            result = await session.execute(select(Group).where((Group.group == group_id) &
+                                                               (Group.subgroup == subgroup) &
+                                                               (Group.notify == true())))
+            users = result.fetchall()
 
-            return
-
-
-async def select_all_users(session_maker: async_sessionmaker) -> list:
-    async with session_maker() as session:
-        async with session.begin():
-            session: AsyncSession
-
-            users_ids_column = await session.execute(select(Visited.user_id))
-            users_list = users_ids_column.fetchall()
-
-            return users_list
-
-
-async def delete_vis_user(session_maker: async_sessionmaker, uid: int) -> None:
-    async with session_maker() as session:
-        async with session.begin():
-
-            try:
-                await session.execute(delete(Visited).where(Visited.user_id == uid))
-                return
-            except Exception as e:
-                print("#"*20)
-                print(e)
-                print("#"*20)
-                return
-
+            if users:
+                users_ids_list = []
+                for user in users:
+                    users_ids_list.append(user[0].user_id)
+                return users_ids_list
+            else:
+                return []

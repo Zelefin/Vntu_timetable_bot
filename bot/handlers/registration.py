@@ -7,7 +7,7 @@ from aiogram import F
 
 from ScrapItUp import groups_ids
 from bot.phrases import subgroups, reg_phrases, faculties, courses, no_group
-from bot.db import add_user
+from bot.db.db_functions import add_user
 from bot.middlewares import RegistrationMessageMiddleware
 from bot.keyboards import groups_kb, builder_kb
 
@@ -114,13 +114,12 @@ async def group_chosen_incorrectly(message: Message, state: FSMContext):
 async def subgroup_chosen(message: Message, state: FSMContext, session_maker):
     user_info = await state.get_data()
     chosen_group = int(user_info['chosen_group'])
-    chosen_group_text = user_info['chosen_group_text']
     chosen_subgroup = int(message.text[0])
 
     if await add_user(session_maker, message.from_user.id, chosen_group, chosen_subgroup):
         await message.answer(
-            text=reg_phrases["successful"].format(
-                g=chosen_group_text, s=chosen_subgroup),
+            text=reg_phrases["successful"].format(f=user_info['chosen_faculty'], c=user_info['chosen_course'],
+                                                  g=user_info['chosen_group_text'], s=chosen_subgroup),
             reply_markup=ReplyKeyboardRemove()
         )
     else:

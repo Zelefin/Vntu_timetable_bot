@@ -3,5 +3,5 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
-RUN cmod 755 .
+RUN chmod 755 .
 COPY . .

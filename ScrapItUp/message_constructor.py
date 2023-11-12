@@ -1,7 +1,9 @@
 import json
+import os
 from pathlib import Path
 
 from ScrapItUp.ids_dict import groups_ids
+from bot.phrases import days_short, lesson_types
 
 
 PATH = Path.cwd()
@@ -9,13 +11,11 @@ PATH = Path.cwd()
 if PATH.name == "bot":
     PATH = PATH.parent
 
-nameDaysShort = ["Пн", "Вт", "Ср", "Чт", "Пт"]
 
-lessonTypes = {
-    "ЛК": "ЛК🟨",
-    "ПЗ": "ПЗ🟩",
-    "ЛР": "ЛР🟦"
-}
+def path_creator(group_id: str) -> None:
+    for w in range(1, 3):
+        for d in range(1, 6):
+            os.makedirs(f'{PATH}/ScrapItUp/Groups/{group_id}/{w}/{d}', exist_ok=True)
 
 
 def add_lesson(lesson: dict) -> str:
@@ -24,7 +24,7 @@ def add_lesson(lesson: dict) -> str:
         lesson['StartAt'] + "</b> До <b>" + lesson['EndAt'] + "</b>"
     lesson_name_type = "Назва: <b>" + \
         lesson['LessonName'] + ", " + \
-        lessonTypes[f"{lesson['LessonType']}"] + "</b>"
+        lesson_types[f"{lesson['LessonType']}"] + "</b>"
 
     if lesson.get('TeacherFullName') is not None:
         lesson_teacher_name = "Викладач: " + lesson['TeacherFullName']
@@ -71,14 +71,14 @@ def constructor(current_week: dict):
     total_week_1_subgroup = []
     total_week_2_subgroup = []
 
-    for dayShort in nameDaysShort:
+    for day_short in days_short:
 
         current_day_lessons = []
         str_current_day_1sub = ""
         str_current_day_2sub = ""
 
         for key, day in current_week.items():
-            if isinstance(day, dict) and key == dayShort:
+            if isinstance(day, dict) and key == day_short:
                 date = f"> 🗓{day['DayDate']} ({day['DayNameLong']})\n\n"
                 str_current_day_1sub += date
                 str_current_day_2sub += date
@@ -120,6 +120,8 @@ def week_construct(week: str) -> None:
         current_week = constructor(json_data[week])
 
         week_num = json_data[week]['week_info'][0]
+
+        path_creator(group_id)  # to create folders automatically
 
         i = 1
         for day in current_week[0]:

@@ -11,7 +11,7 @@ class SendFeedback(StatesGroup):
     sending_message = State()
 
 
-feedback_router = Router(name='start')
+feedback_router = Router(name='feedback')
 
 
 @feedback_router.message(Command("feedback"))

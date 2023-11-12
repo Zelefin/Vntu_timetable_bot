@@ -3,7 +3,7 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
 
-from bot.db import check_user
+from bot.db.db_functions import check_user
 from bot.phrases import design_midlwr_phrases
 
 
