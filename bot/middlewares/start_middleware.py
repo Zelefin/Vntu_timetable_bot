@@ -24,4 +24,4 @@ class StartMessageMiddleware(BaseMiddleware):
                 return await handler(event, data)
         else:
             await add_user_vis(data['session_maker'], event.from_user.id)
-            await event.answer(start_midlwr_phrases["first_visit"])
+            await event.answer(start_midlwr_phrases["first_visit"].format(n=event.from_user.first_name))

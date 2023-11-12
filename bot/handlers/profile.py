@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
+from ScrapItUp import groups_ids
 from bot.middlewares import DesignMessageMiddleware, DesignCallbackMiddleware
 from bot.db.db_functions import notify_user
 from bot.phrases import profile_phrases
@@ -20,7 +21,8 @@ async def command_profile_handler(message: Message, user_info) -> None:
     else:
         kb = [[InlineKeyboardButton(text=profile_phrases['on'], callback_data="on")]]
         reply_markup = InlineKeyboardMarkup(inline_keyboard=kb)
-    await message.answer(text=profile_phrases["profile"].format(g=user_info['group'],
+    await message.answer(text=profile_phrases["profile"].format(g=[key for key, value in groups_ids.items()
+                                                                   if value == str(user_info['group'])][0],
                                                                 s=user_info['subgroup']), reply_markup=reply_markup)
 
 
