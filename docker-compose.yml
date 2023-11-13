@@ -6,7 +6,7 @@ services:
       - ./bot/.env
     volumes:
       - pgdata:/var/lib/postgresql/data
-    restart: on-failure
+    restart: always
     ports:
       - "5432:5432"
   bot:
