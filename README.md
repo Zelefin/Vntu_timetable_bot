@@ -19,13 +19,15 @@ JETIQ_PASSWORD=
 
 BOT_TOKEN=
 ```
-2. Create directories in ScrapItUp:
+2. Run command:
 ```
-Groups/
-Groups_html/
-Groups_json/
+make makedir
 ```
-3. ....
-4. PROFIT!!
-
-(Still in progress so maybe not :trollface::)
+3. Create db with your postgres_db name
+4. Run
+```
+docker-compose up -d
+```
+5. .....
+6. PROFIT!!
+(Still in progress so maybe not :trollface:)
