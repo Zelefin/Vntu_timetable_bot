@@ -70,3 +70,8 @@ async def sending_on(message: Message, state: FSMContext, bot: Bot, users_ids: l
 async def sending_off(message: Message, state: FSMContext):
     await message.answer(text="Нічого не відправляю")
     await state.clear()
+
+
+@mailing_router.message(Command("users"))
+async def command_all_users(message: Message, users_ids: list) -> None:
+    await message.answer(text=f"Total amount of users: {len(users_ids)}")
