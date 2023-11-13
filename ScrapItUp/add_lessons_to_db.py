@@ -31,12 +31,16 @@ async def main_parsing_to_db(session_maker: async_sessionmaker):
                                                  group_id=int(group_id),
                                                  subgroup=1,
                                                  lesson_name=lesson['LessonName'][0],
+                                                 lesson_type=lesson['LessonType'][0],
+                                                 teacher_short_name=lesson['TeacherShortName'][0],
                                                  lesson_time_start=lesson['StartAt'],
                                                  lesson_date_start=date)
                                 await add_lesson(session_maker=session_maker,
                                                  group_id=int(group_id),
                                                  subgroup=2,
                                                  lesson_name=lesson['LessonName'][1],
+                                                 lesson_type=lesson['LessonType'][1],
+                                                 teacher_short_name=lesson['TeacherShortName'][1],
                                                  lesson_time_start=lesson['StartAt'],
                                                  lesson_date_start=date)
                             else:
@@ -44,5 +48,7 @@ async def main_parsing_to_db(session_maker: async_sessionmaker):
                                                  group_id=int(group_id),
                                                  subgroup=int(lesson['LessonSubgroup']),
                                                  lesson_name=lesson['LessonName'],
+                                                 lesson_type=lesson['LessonType'],
+                                                 teacher_short_name=lesson['TeacherShortName'],
                                                  lesson_time_start=lesson['StartAt'],
                                                  lesson_date_start=date)

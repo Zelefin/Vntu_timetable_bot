@@ -1,8 +1,8 @@
 """1_0_0
 
-Revision ID: 0f6be5132132
+Revision ID: 01fb74cbc3df
 Revises: 
-Create Date: 2023-11-12 00:05:50.982182
+Create Date: 2023-11-13 15:02:39.368549
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '0f6be5132132'
+revision: str = '01fb74cbc3df'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -40,6 +40,8 @@ def upgrade() -> None:
     sa.Column('group_id', sa.Integer(), nullable=False),
     sa.Column('subgroup', sa.Integer(), nullable=False),
     sa.Column('lesson_name', sa.String(), nullable=False),
+    sa.Column('lesson_type', sa.VARCHAR(length=2), nullable=False),
+    sa.Column('teacher_short_name', sa.String(), nullable=False),
     sa.Column('lesson_time_start', sa.VARCHAR(length=5), nullable=False),
     sa.Column('lesson_date_start', sa.VARCHAR(length=5), nullable=False),
     sa.PrimaryKeyConstraint('group_id', 'lesson_name', 'lesson_time_start', 'lesson_date_start')
@@ -47,6 +49,8 @@ def upgrade() -> None:
     op.create_table('lessons_links',
     sa.Column('group_id', sa.Integer(), nullable=False),
     sa.Column('lesson_name', sa.String(), nullable=False),
+    sa.Column('lesson_type', sa.VARCHAR(length=2), nullable=False),
+    sa.Column('teacher_short_name', sa.String(), nullable=False),
     sa.Column('lesson_link', sa.String(), nullable=False),
     sa.Column('add_date', sa.DATE(), nullable=True),
     sa.PrimaryKeyConstraint('group_id', 'lesson_name')

@@ -17,6 +17,7 @@ if PATH.name == "bot":
 
 
 def generate_html():
+    return
     load_dotenv(f"{PATH}/bot/.env")
 
     session = requests.Session()  # Create session

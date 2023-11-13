@@ -149,7 +149,7 @@ async def subgroup_chosen_incorrectly(message: Message):
 async def days_chosen(message: Message, state: FSMContext):
     user_data = await state.get_data()
     await message.answer(
-        text=send_lessons(user_data, days.index(message.text)+1),
+        text=await send_lessons(user_data, days.index(message.text)+1),
         reply_markup=ReplyKeyboardRemove()
     )
     await state.clear()

@@ -53,6 +53,12 @@ class Lessons(BaseModel):
     # Lesson name
     lesson_name = Column(String, unique=False, nullable=False, primary_key=True)
 
+    # Lesson type
+    lesson_type = Column(VARCHAR(2), unique=False, nullable=False)
+
+    # Teacher short name
+    teacher_short_name = Column(String, unique=False, nullable=False)
+
     # When lesson starts
     lesson_time_start = Column(VARCHAR(5), unique=False, nullable=False, primary_key=True)
     lesson_date_start = Column(VARCHAR(5), unique=False, nullable=False, primary_key=True)
@@ -70,6 +76,12 @@ class LessonsLinks(BaseModel):
 
     # Name of the lesson
     lesson_name = Column(String, nullable=False, primary_key=True)
+
+    # Lesson type
+    lesson_type = Column(VARCHAR(2), unique=False, nullable=False)
+
+    # Teacher short name
+    teacher_short_name = Column(String, unique=False, nullable=False)
 
     # Link to the lesson
     lesson_link = Column(String, nullable=False)
