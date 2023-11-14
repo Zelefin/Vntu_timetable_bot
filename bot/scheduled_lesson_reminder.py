@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from datetime import datetime, timedelta
 import pytz
 
@@ -42,13 +43,23 @@ async def remind_collector(bot: Bot, session_maker) -> None:
             # Лише 1 підгрупа
             elif group[1] == 1:
                 users = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=1)
-                link = await get_link(session_maker=session_maker, group_id=group[0], lesson_name=group[2])
+                link = await get_link(session_maker=session_maker,
+                                      group_id=group[0],
+                                      lesson_name=group[2],
+                                      lesson_type=group[3],
+                                      teacher_short_name=group[4]
+                                      )
                 await remind_sender(bot, users, group[2], link)
 
             # Лише 2 підгрупа
             elif group[1] == 2:
                 users = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=2)
-                link = await get_link(session_maker=session_maker, group_id=group[0], lesson_name=group[2])
+                link = await get_link(session_maker=session_maker,
+                                      group_id=group[0],
+                                      lesson_name=group[2],
+                                      lesson_type=group[3],
+                                      teacher_short_name=group[4]
+                                      )
                 await remind_sender(bot, users, group[2], link)
 
 
@@ -62,4 +73,4 @@ async def remind_sender(bot: Bot, users_ids: list[int], lesson: list[str], link:
                                                                                       teacher=lesson[2],
                                                                                       l=link))
         except Exception as e:
-            print(e)
+            logging.info(e)
