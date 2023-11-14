@@ -8,7 +8,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
     ports:
-      - "5423:5423"
+      - "127.0.0.1:5423:5423"
     command: -p 5423
   bot:
     build: .
