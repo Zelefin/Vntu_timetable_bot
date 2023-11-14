@@ -22,6 +22,7 @@ section = config.config_ini_section
 config.set_section_option(section, "POSTGRES_USER", os.environ.get("POSTGRES_USER"))
 config.set_section_option(section, "POSTGRES_PASSWORD", os.environ.get("POSTGRES_PASSWORD"))
 config.set_section_option(section, "POSTGRES_HOST", os.environ.get("POSTGRES_HOST"))
+config.set_section_option(section, "POSTGRES_PORT", os.environ.get("POSTGRES_PORT"))
 config.set_section_option(section, "POSTGRES_DB", os.environ.get("POSTGRES_DB"))
 
 # Interpret the config file for Python logging.
