@@ -58,6 +58,7 @@ async def sending_on(message: Message, state: FSMContext, bot: Bot, users_ids: l
             logging.info(e)
             await delete_user(session_maker=session_maker, uid=user_id[0])
             await delete_vis_user(session_maker=session_maker, uid=user_id[0])
+            continue
 
     await message.answer(text=f"Users who got message {users_who_got_it}/{len(users_ids)}")
 

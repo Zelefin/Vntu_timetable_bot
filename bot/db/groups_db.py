@@ -4,18 +4,21 @@ import datetime
 from .base import BaseModel
 
 
-class Group(BaseModel):
-    __tablename__ = "groups_data"
+class Student(BaseModel):
+    __tablename__ = "students_data"
 
     # Telegram user id
     user_id = Column(BigInteger, unique=True, nullable=False, primary_key=True)
 
-    # Group and subgroup
+    # Student and subgroup
     group = Column(Integer, unique=False, nullable=False)
     subgroup = Column(Integer, unique=False, nullable=False)
 
     # Should we notify user that lesson has begun?
     notify = Column(Boolean, default=False, server_default=false())
+
+    # Jetiq check. Does this user exists in jetiq database?
+    jetiq = Column(Boolean, default=False, server_default=false())
 
     # Reg Date
     reg_date = Column(DATE, default=datetime.date.today())
@@ -44,7 +47,7 @@ class Visited(BaseModel):
 class Lessons(BaseModel):
     __tablename__ = "lessons_data"
 
-    # Group id cant be unique, because group can have lots of lessons
+    # Student id cant be unique, because group can have lots of lessons
     group_id = Column(Integer, unique=False, nullable=False, primary_key=True)
 
     # Subgroup too
@@ -71,7 +74,7 @@ class Lessons(BaseModel):
 class LessonsLinks(BaseModel):
     __tablename__ = "lessons_links"
 
-    # Group id
+    # Student id
     group_id = Column(Integer, nullable=False, primary_key=True)
 
     # Name of the lesson
