@@ -23,11 +23,11 @@ BOT_TOKEN=
 ```
 make makedir
 ```
-3. Create db with your postgres_db name
-4. Run
+3. Run
 ```
 docker-compose up -d
 ```
+4. Create db inside of docker container with your postgres_db name. Make sure bot got connected to it.
 5. .....
 6. PROFIT!!
 (Still in progress so maybe not :trollface:)
