@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -17,5 +19,5 @@ async def command_start_handler(message: Message, session_maker) -> None:
         await main_parsing_to_db(session_maker=session_maker)
         await message.answer(text="Timetable successfully updated!")
     except Exception as e:
-        print(e)
+        logging.info(e)
         await message.answer(text=f"Some troubles... Exception:\n\n{e}")

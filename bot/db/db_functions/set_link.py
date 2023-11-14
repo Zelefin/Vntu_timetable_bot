@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy import select, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -65,9 +67,7 @@ async def remove_link_to_lesson(session_maker: async_sessionmaker, group_id: int
                                            (LessonsLinks.teacher_short_name == teacher_short_name)))
                 return True
             except Exception as e:
-                print("#" * 20)
-                print(e)
-                print("#" * 20)
+                logging.info(e)
                 return False
 
 

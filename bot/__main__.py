@@ -72,7 +72,7 @@ async def scheduled_update(bot: Bot, session_maker: async_sessionmaker):
         await main_parsing_to_db(session_maker)
         await bot.send_message(chat_id=admin_id, text="Timetable successfully updated!")
     except Exception as e:
-        print(e)
+        logging.info(e)
         await bot.send_message(chat_id=admin_id, text=f"Some troubles... Exception:\n\n{e}")
 
 

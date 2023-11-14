@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, Bot
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -41,7 +43,7 @@ async def sending_on(message: Message, state: FSMContext, bot: Bot):
             await message.answer(text=feedback_phrases["good"])
 
     except Exception as e:
-        print(e)
+        logging.info(e)
         await message.answer(text=feedback_phrases["bad_stuff"])
 
     await state.clear()

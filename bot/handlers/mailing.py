@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import Router, F, Bot
 from aiogram.filters import Command
@@ -54,7 +55,7 @@ async def sending_on(message: Message, state: FSMContext, bot: Bot, users_ids: l
             await asyncio.sleep(0.5)
             users_who_got_it += 1
         except Exception as e:
-            print(e)
+            logging.info(e)
             await delete_user(session_maker=session_maker, uid=user_id[0])
             await delete_vis_user(session_maker=session_maker, uid=user_id[0])
 

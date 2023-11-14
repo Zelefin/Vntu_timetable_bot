@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy import delete, select, update, true
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -47,9 +49,7 @@ async def delete_user(session_maker: async_sessionmaker, uid: int) -> bool:
                 await session.execute(delete(Group).where(Group.user_id == uid))
                 return True
             except Exception as e:
-                print("#" * 20)
-                print(e)
-                print("#" * 20)
+                logging.info(e)
                 return False
 
 

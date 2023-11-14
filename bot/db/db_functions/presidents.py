@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -51,8 +53,6 @@ async def delete_president(session_maker: async_sessionmaker, uid: int) -> None:
                 await session.execute(delete(ClassPresidents).where(ClassPresidents.user_id == uid))
                 return
             except Exception as e:
-                print("#" * 20)
-                print(e)
-                print("#" * 20)
+                logging.info(e)
                 return
 
