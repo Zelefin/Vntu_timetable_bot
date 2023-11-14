@@ -8,7 +8,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
     ports:
-      - "5432:5432"
+      - "5423:5423"
+    command: -p 5423
   bot:
     build: .
     command: sh -c "make migrate && python -m bot"
