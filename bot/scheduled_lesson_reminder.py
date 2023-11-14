@@ -49,7 +49,7 @@ async def remind_collector(bot: Bot, session_maker) -> None:
                                       lesson_type=group[3],
                                       teacher_short_name=group[4]
                                       )
-                await remind_sender(bot, users, group[2], link)
+                await remind_sender(bot=bot, users_ids=users, lesson=[group[2], group[3], group[4]], link=link)
 
             # Лише 2 підгрупа
             elif group[1] == 2:
@@ -60,7 +60,7 @@ async def remind_collector(bot: Bot, session_maker) -> None:
                                       lesson_type=group[3],
                                       teacher_short_name=group[4]
                                       )
-                await remind_sender(bot, users, group[2], link)
+                await remind_sender(bot=bot, users_ids=users, lesson=[group[2], group[3], group[4]], link=link)
 
 
 async def remind_sender(bot: Bot, users_ids: list[int], lesson: list[str], link: str) -> None:
@@ -73,4 +73,5 @@ async def remind_sender(bot: Bot, users_ids: list[int], lesson: list[str], link:
                                                                                       teacher=lesson[2],
                                                                                       l=link))
         except Exception as e:
-            logging.info(e)
+            logging.info(f"<#>GOT EXCEPTION:\n {e}")
+            continue
