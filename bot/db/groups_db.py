@@ -78,10 +78,10 @@ class LessonsLinks(BaseModel):
     lesson_name = Column(String, nullable=False, primary_key=True)
 
     # Lesson type
-    lesson_type = Column(VARCHAR(2), unique=False, nullable=False)
+    lesson_type = Column(VARCHAR(2), unique=False, nullable=False, primary_key=True)
 
     # Teacher short name
-    teacher_short_name = Column(String, unique=False, nullable=False)
+    teacher_short_name = Column(String, unique=False, nullable=False, primary_key=True)
 
     # Link to the lesson
     lesson_link = Column(String, nullable=False)
