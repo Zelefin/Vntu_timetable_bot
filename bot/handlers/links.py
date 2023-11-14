@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 
 from bot.middlewares import LinksMessageMiddleware
 from bot.db.db_functions import add_link_to_lesson, remove_link_to_lesson, get_links_list
-from bot.phrases import links_phrases
+from bot.phrases import links_phrases, lesson_types
 
 
 class SetLink(StatesGroup):
@@ -45,21 +45,26 @@ async def lesson_taker(message: Message, state: FSMContext):
 @links_router.message(SetLink.sending_lesson_type)
 async def lesson_taker(message: Message, state: FSMContext):
 
-    lesson_type = message.text
+    lesson_type = message.text.upper()
 
-    await message.answer(text=links_phrases['waiting_teachers_name'])
-    await state.update_data(lesson_type=lesson_type.upper())
-    await state.set_state(SetLink.sending_teacher_short_name)
+    if lesson_type in lesson_types:
+        await message.answer(text=links_phrases['waiting_teachers_name'])
+        await state.update_data(lesson_type=lesson_type.upper())
+        await state.set_state(SetLink.sending_teacher_short_name)
+    else:
+        await message.answer(text=links_phrases['wrong_type'])
 
 
 @links_router.message(SetLink.sending_teacher_short_name)
 async def lesson_taker(message: Message, state: FSMContext):
 
     teacher_short_name = message.text
-
-    await message.answer(text=links_phrases['waiting_link'])
-    await state.update_data(teacher_short_name=teacher_short_name)
-    await state.set_state(SetLink.sending_link)
+    if teacher_short_name[-1] == ".":
+        await message.answer(text=links_phrases['waiting_link'])
+        await state.update_data(teacher_short_name=teacher_short_name)
+        await state.set_state(SetLink.sending_link)
+    else:
+        await message.answer(text=links_phrases['no_dot'])
 
 
 @links_router.message(SetLink.sending_link)
