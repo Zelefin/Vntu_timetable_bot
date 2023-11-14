@@ -13,7 +13,10 @@ async def send_lessons(user_info, day: int, week=cur_week()) -> str:
     group = str(user_info['group'])  # group id
     subgroup = str(user_info['subgroup'])  # its integer already
 
-    with open(str(PATH) + "/ScrapItUp/Groups/" + group + "/" +
-              str(week) + "/" + str(day) + "/IP" + subgroup + ".txt", "r", encoding="utf8") as text:
+    try:
+        with open(str(PATH) + "/ScrapItUp/Groups/" + group + "/" +
+                  str(week) + "/" + str(day) + "/IP" + subgroup + ".txt", "r", encoding="utf8") as text:
 
-        return text.read()
+            return text.read()
+    except FileNotFoundError:
+        return "Отакої! Файла не знайдено!😳\nНапишіть будь ласка про це у <i>/feedback</i>"
