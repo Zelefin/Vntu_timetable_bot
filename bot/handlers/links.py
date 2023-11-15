@@ -35,7 +35,6 @@ async def command_mailing_handler(message: Message, state: FSMContext) -> None:
 
 @links_router.message(SetLink.sending_lesson)
 async def lesson_taker(message: Message, state: FSMContext, session_maker):
-
     lesson_name = message.text
     if await check_lesson_name(session_maker=session_maker, lesson_name=lesson_name):
         await message.answer(text=links_phrases['waiting_lesson_type'])
@@ -44,9 +43,9 @@ async def lesson_taker(message: Message, state: FSMContext, session_maker):
     else:
         await message.answer(text=links_phrases['wrong_lesson'])
 
+
 @links_router.message(SetLink.sending_lesson_type)
 async def lesson_taker(message: Message, state: FSMContext):
-
     lesson_type = message.text.upper()
 
     if lesson_type in lesson_types:
@@ -59,7 +58,6 @@ async def lesson_taker(message: Message, state: FSMContext):
 
 @links_router.message(SetLink.sending_teacher_short_name)
 async def lesson_taker(message: Message, state: FSMContext, session_maker):
-
     teacher_short_name = message.text
 
     if teacher_short_name[-1] == ".":
@@ -109,23 +107,28 @@ async def link_remove(message: Message, state: FSMContext):
 
 
 @links_router.message(RemoveLink.lesson_to_remove)
-async def link_remove(message: Message, state: FSMContext):
+async def link_remove(message: Message, state: FSMContext, session_maker):
 
     lesson_name = message.text
 
-    await message.answer(text=links_phrases['waiting_lesson_type'])
-    await state.update_data(lesson_name=lesson_name)
-    await state.set_state(RemoveLink.lesson_type_to_remove)
+    if await check_lesson_name(session_maker=session_maker, lesson_name=lesson_name):
+        await message.answer(text=links_phrases['waiting_lesson_type'])
+        await state.update_data(lesson_name=lesson_name)
+        await state.set_state(RemoveLink.lesson_type_to_remove)
+    else:
+        await message.answer(text=links_phrases['wrong_lesson'])
 
 
 @links_router.message(RemoveLink.lesson_type_to_remove)
 async def link_remove(message: Message, state: FSMContext):
-
     lesson_type = message.text
 
-    await message.answer(text=links_phrases['delete_teacher_name'])
-    await state.update_data(lesson_type=lesson_type.upper())
-    await state.set_state(RemoveLink.lesson_teacher_to_remove)
+    if lesson_type in lesson_types:
+        await message.answer(text=links_phrases['delete_teacher_name'])
+        await state.update_data(lesson_type=lesson_type.upper())
+        await state.set_state(RemoveLink.lesson_teacher_to_remove)
+    else:
+        await message.answer(text=links_phrases['wrong_type_del'])
 
 
 @links_router.message(RemoveLink.lesson_teacher_to_remove)
@@ -135,15 +138,27 @@ async def link_remove(message: Message, state: FSMContext, session_maker, presid
     lesson_type = data['lesson_type']
     teacher_short_name = message.text
 
-    await remove_link_to_lesson(session_maker,
-                                group_id=president_group,
-                                lesson_name=lesson_name,
-                                lesson_type=lesson_type,
-                                teacher_short_name=teacher_short_name)
-    await message.answer(text=links_phrases['deleted'].format(n=lesson_name,
-                                                              type=lesson_type,
-                                                              teacher=teacher_short_name))
-    await state.clear()
+    if teacher_short_name[-1] == ".":
+        if await check_teacher_name(session_maker=session_maker, teacher_short_name=teacher_short_name):
+
+            if await remove_link_to_lesson(session_maker,
+                                        group_id=president_group,
+                                        lesson_name=lesson_name,
+                                        lesson_type=lesson_type,
+                                        teacher_short_name=teacher_short_name
+                                        ):
+                await message.answer(text=links_phrases['deleted'].format(n=lesson_name,
+                                                                          type=lesson_type,
+                                                                          teacher=teacher_short_name))
+            else:
+                await message.answer(text=links_phrases['not_deleted'])
+
+            await state.clear()
+        else:
+            await message.answer(text=links_phrases['wrong_teacher'])
+
+    else:
+        await message.answer(text=links_phrases['no_dot_del'])
 
 
 @links_router.message(Command("links"))

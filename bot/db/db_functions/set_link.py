@@ -1,5 +1,3 @@
-import logging
-
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy import select, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -59,15 +57,21 @@ async def remove_link_to_lesson(session_maker: async_sessionmaker, group_id: int
                                 lesson_name: str, lesson_type: str, teacher_short_name: str) -> bool:
     async with session_maker() as session:
         async with session.begin():
-            session: AsyncSession
-            try:
-                await session.execute(delete(LessonsLinks).where((LessonsLinks.group_id == group_id) &
-                                           (LessonsLinks.lesson_name == lesson_name) &
-                                           (LessonsLinks.lesson_type == lesson_type) &
-                                           (LessonsLinks.teacher_short_name == teacher_short_name)))
+
+            result = await session.execute(select(LessonsLinks).where((LessonsLinks.group_id == group_id) &
+                                       (LessonsLinks.lesson_name == lesson_name) &
+                                       (LessonsLinks.lesson_type == lesson_type) &
+                                       (LessonsLinks.teacher_short_name == teacher_short_name)))
+            link = result.one_or_none()
+
+            if link:
+                await session.execute(
+                    delete(LessonsLinks).where((LessonsLinks.group_id == group_id) &
+                                               (LessonsLinks.lesson_name == lesson_name) &
+                                               (LessonsLinks.lesson_type == lesson_type) &
+                                               (LessonsLinks.teacher_short_name == teacher_short_name)))
                 return True
-            except Exception as e:
-                logging.info(e)
+            else:
                 return False
 
 
