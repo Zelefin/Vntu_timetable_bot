@@ -121,7 +121,7 @@ async def link_remove(message: Message, state: FSMContext, session_maker):
 
 @links_router.message(RemoveLink.lesson_type_to_remove)
 async def link_remove(message: Message, state: FSMContext):
-    lesson_type = message.text
+    lesson_type = message.text.upper()
 
     if lesson_type in lesson_types:
         await message.answer(text=links_phrases['delete_teacher_name'])
