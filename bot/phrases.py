@@ -169,8 +169,12 @@ profile_phrases = {
     "on_answ": "Ви підписались на розсилку!",
     "off_answ": "Ви відписались від розсилки!",
     "error": "Виникла помилка!",
-    "first_photo": "AgACAgIAAxkBAAIYjmVTxfM7P7p0XA3dAt65hXacilEsAAJq1TEbUaehSsgSj4fPILVGAQADAgADeAADMwQ",
-    "second_photo": "AgACAgIAAxkBAAIYlGVTxfywGjK6sjsV-TIokbGKVraSAAJr1TEbUaehSpu6riQXFh5UAQADAgADeAADMwQ",
+    # "first_photo": "AgACAgIAAxkBAAIYjmVTxfM7P7p0XA3dAt65hXacilEsAAJq1TEbUaehSsgSj4fPILVGAQADAgADeAADMwQ",
+    # DEPLOY BOT FIRST PHOTO UNDER
+    "first_photo": "AgACAgIAAxkBAALbyGVU7zwQTLcuMUFOnh2byooWxCV-AAJ60jEbdZWoSqFNUsRe-S7OAQADAgADeAADMwQ",
+    # DEPLOY BOT SECOND PHOTO UNDER
+    "second_photo": "AgACAgIAAxkBAALbzGVU70J-rgABgb8ruWJ9mpcPbbrLhwACe9IxG3WVqEo1rgAB1aYuwCcBAAMCAAN4AAMzBA",
+    # "second_photo": "AgACAgIAAxkBAAIYlGVTxfywGjK6sjsV-TIokbGKVraSAAJr1TEbUaehSpu6riQXFh5UAQADAgADeAADMwQ",
     "on_check": "❗ Підписавшись на розсилку, одразу із нагадуванням,"
                 " ви матимете змогу отримати також посилання на лекцію.\n\n"
                 "🔐 Для забезпечення конфіденційності посилань я маю перевірити чи є ви в системі JetIQ\n\n"
