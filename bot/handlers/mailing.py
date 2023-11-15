@@ -52,7 +52,7 @@ async def sending_on(message: Message, state: FSMContext, bot: Bot, users_ids: l
     for user_id in users_ids:
         try:
             await bot.send_message(chat_id=user_id[0], text=message_send)
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             users_who_got_it += 1
         except Exception as e:
             logging.info(e)
