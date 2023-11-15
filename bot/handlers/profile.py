@@ -9,8 +9,7 @@ from bot.Groups_func import jetiq_check
 from bot.db.db_functions.registration_db import jetiq_set_true
 from bot.middlewares import DesignMessageMiddleware, DesignCallbackMiddleware
 from bot.db.db_functions import notify_user
-from bot.phrases import profile_phrases
-
+from bot.phrases import profile_phrases, admin_id
 
 profile_router = Router(name='profile')
 profile_router.message.middleware(DesignMessageMiddleware())
@@ -132,16 +131,22 @@ async def profile_callback_off(
 async def profile_callback_off(
         message: Message,
         session_maker,
-        state: FSMContext
+        state: FSMContext,
+        bot: Bot
 ) -> None:
 
     jetid = message.text
+    jet_check = await jetiq_check(jetid)
 
-    if await jetiq_check(jetid):
-        await message.answer(text=profile_phrases['check_ok'])
-        await jetiq_set_true(session_maker, message.from_user.id)
-        await notify_user(session_maker=session_maker, uid=message.from_user.id)
+    if isinstance(jet_check, bool):
+        if jet_check:
+            await message.answer(text=profile_phrases['check_ok'])
+            await jetiq_set_true(session_maker, message.from_user.id)
+            await notify_user(session_maker=session_maker, uid=message.from_user.id)
+        else:
+            await message.answer(text=profile_phrases['check_failed'])
     else:
-        await message.answer(text=profile_phrases['check_failed'])
+        await bot.send_message(chat_id=admin_id, text=f"While checking got error:\n\n{jet_check}")
+        await message.answer(text=profile_phrases['cookies_fail'])
 
     await state.clear()

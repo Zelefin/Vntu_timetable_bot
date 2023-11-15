@@ -13,6 +13,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 
+from bot.Groups_func import get_new_cookies
 from bot.handlers import routers
 from bot.phrases import bot_commands
 from bot.db import create_async_engine, get_session_maker
@@ -59,6 +60,7 @@ async def main() -> None:
     scheduler.add_job(remind_collector, trigger='interval', seconds=60,
                       kwargs={"bot": bot, "session_maker": session_maker})
     scheduler.start()
+    await get_new_cookies()
 
     # Видалимо усі вхідні месседжи
     await bot.delete_webhook(drop_pending_updates=True)
