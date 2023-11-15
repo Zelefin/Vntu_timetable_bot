@@ -25,6 +25,30 @@ async def add_lesson(session_maker: async_sessionmaker,
             await session.merge(lesson)
 
 
+async def check_lesson_name(session_maker: async_sessionmaker, lesson_name: str) -> bool:
+    async with session_maker() as session:
+        async with session.begin():
+            result = await session.execute(select(Lessons).where((Lessons.lesson_name == lesson_name)))
+            lesson = result.fetchone()
+
+            if lesson:
+                return True
+            else:
+                return False
+
+
+async def check_teacher_name(session_maker: async_sessionmaker, teacher_short_name: str):
+    async with session_maker() as session:
+        async with session.begin():
+            result = await session.execute(select(Lessons).where((Lessons.teacher_short_name == teacher_short_name)))
+            teacher = result.fetchone()
+
+            if teacher:
+                return True
+            else:
+                return False
+
+
 async def get_groups_to_remind(session_maker: async_sessionmaker, time: str, date: str) -> None | list:
     async with session_maker() as session:
         async with session.begin():
