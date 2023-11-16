@@ -69,7 +69,7 @@ async def main() -> None:
 
 async def scheduled_update(bot: Bot, session_maker: async_sessionmaker):
     try:
-        scrapitup_main()
+        await scrapitup_main()
         await bot.send_message(chat_id=admin_id, text="Txt files updated.")
         await main_parsing_to_db(session_maker)
         await bot.send_message(chat_id=admin_id, text="Timetable successfully updated!")
