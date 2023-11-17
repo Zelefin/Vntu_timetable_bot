@@ -35,7 +35,7 @@ async def desing_callbacks(
             x = 1 if cur_week() == 2 else 2
             day = 1
             await callback.message.edit_text(
-                text= await send_lessons(user_info, day, x), reply_markup=get_design_kb(day, x))
+                text=await send_lessons(user_info, day, x), reply_markup=get_design_kb(day, x))
             await callback.answer()
             return
         elif week == 0:
@@ -48,9 +48,10 @@ async def desing_callbacks(
         if day == -1:
             day = cur_day() + 1
             if day >= 6:
+                x = 1 if cur_week() == 2 else 2
                 day = 1
             await callback.message.edit_text(
-                text=await send_lessons(user_info, day), reply_markup=get_design_kb(day))
+                text=await send_lessons(user_info, day, x), reply_markup=get_design_kb(day, x))
         elif day == 0:
             day = cur_day()
             await callback.message.edit_text(
