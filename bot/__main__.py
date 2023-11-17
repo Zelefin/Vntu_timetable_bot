@@ -55,7 +55,7 @@ async def main() -> None:
     scheduler = AsyncIOScheduler(timezone="Europe/Kyiv")
     scheduler.add_job(scheduled_update, trigger='cron', hour=3, minute=0, start_date=datetime.now(),
                       kwargs={"bot": bot, "session_maker": session_maker})
-    scheduler.add_job(scheduled_update, trigger='cron', hour=5, minute=0, start_date=datetime.now(),
+    scheduler.add_job(scheduled_update_reserve, trigger='cron', hour=5, minute=0, start_date=datetime.now(),
                       kwargs={"bot": bot, "session_maker": session_maker})
     scheduler.add_job(remind_collector, trigger='interval', seconds=60,
                       kwargs={"bot": bot, "session_maker": session_maker})
@@ -66,16 +66,31 @@ async def main() -> None:
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, session_maker=session_maker)
 
+# Flag value to check if function completed successfully.
+# if not - run reserve function.
+flag_value = True
+
 
 async def scheduled_update(bot: Bot, session_maker: async_sessionmaker):
+    global flag_value
     try:
         await scrapitup_main()
         await bot.send_message(chat_id=admin_id, text="Txt files updated.")
         await main_parsing_to_db(session_maker)
         await bot.send_message(chat_id=admin_id, text="Timetable successfully updated!")
+        flag_value = True
     except Exception as e:
         logging.info(e)
         await bot.send_message(chat_id=admin_id, text=f"Some troubles... Exception:\n\n{e}")
+        flag_value = False
+
+
+async def scheduled_update_reserve(bot, session_maker):
+    global flag_value
+    if flag_value:
+        pass
+    else:
+        await scheduled_update(bot, session_maker)
 
 
 if __name__ == "__main__":
