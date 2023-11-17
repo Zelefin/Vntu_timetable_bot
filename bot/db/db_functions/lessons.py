@@ -1,5 +1,6 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker
-from sqlalchemy import select, delete
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
+from sqlalchemy import select, delete, Row
+from typing import Sequence
 
 from bot.db.groups_db import Lessons
 
@@ -23,6 +24,19 @@ async def add_lesson(session_maker: async_sessionmaker,
                              lesson_time_start=lesson_time_start,
                              lesson_date_start=lesson_date_start)
             await session.merge(lesson)
+
+
+async def select_unique_lessons(session_maker: async_sessionmaker, group_id: int) -> Sequence[Row] | None:
+    async with session_maker() as session:
+        async with session.begin():
+            session: AsyncSession
+            result = await session.execute(select(Lessons.lesson_name, Lessons.lesson_type, Lessons.teacher_short_name)
+                                           .where(Lessons.group_id == group_id)
+                                           .group_by(Lessons.lesson_name, Lessons.lesson_type,
+                                                     Lessons.teacher_short_name))
+            unique_lessons = result.fetchall()  # returns Sequence from typing
+
+            return unique_lessons
 
 
 async def check_lesson_name(session_maker: async_sessionmaker, lesson_name: str) -> bool:
@@ -54,9 +68,11 @@ async def get_groups_to_remind(session_maker: async_sessionmaker, time: str, dat
         async with session.begin():
             result = await session.execute(select(Lessons).where((Lessons.lesson_time_start == time) &
                                                                  (Lessons.lesson_date_start == date)))
-            if result:
+
+            lessons = result.fetchall()
+            if lessons:
                 groups_to_send = []
-                lessons = result.fetchall()
+
                 for lesson in lessons:
                     groups_to_send.append([lesson[0].group_id,
                                            lesson[0].subgroup,
