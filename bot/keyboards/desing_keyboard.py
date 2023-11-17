@@ -45,7 +45,7 @@ def get_design_kb(chosen_day: int = 0, w: int = cur_week()) -> InlineKeyboardMar
         text="Завтра🏙", callback_data=DesignCallbackFactory(day=-1)
     )
 
-    if (w != cur_week()):
+    if w != cur_week():
         builder.button(
             text="⬇️Цей тиждень", callback_data=DesignCallbackFactory(week=0)
         )
