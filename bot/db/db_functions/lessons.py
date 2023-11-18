@@ -33,7 +33,7 @@ async def select_unique_lessons(session_maker: async_sessionmaker, group_id: int
             result = await session.execute(select(Lessons.lesson_name, Lessons.lesson_type, Lessons.teacher_short_name)
                                            .where(Lessons.group_id == group_id)
                                            .group_by(Lessons.lesson_name, Lessons.lesson_type,
-                                                     Lessons.teacher_short_name))
+                                                     Lessons.teacher_short_name).order_by(Lessons.lesson_name))
             unique_lessons = result.fetchall()  # returns Sequence from typing
 
             return unique_lessons
