@@ -19,7 +19,7 @@ def dynamic_links(links_list: list, has_link: bool, position: int = 1) -> Inline
                                                                                     position=position))
 
     if position == 1:
-        builder.button(text="⛔️", callback_data=LinksCallbackFactory(action="stop"), position=position)
+        builder.button(text="⛔️", callback_data=LinksCallbackFactory(action="stop", position=position))
         builder.button(text=f"{position}/{len(links_list)}",
                        callback_data=LinksCallbackFactory(action="length", position=position))
         builder.button(text="▶️", callback_data=LinksCallbackFactory(action="next", position=position+1))
