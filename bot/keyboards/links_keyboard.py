@@ -1,17 +1,14 @@
-from typing import Sequence, Optional
-
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from sqlalchemy import Row
 
 
 class LinksCallbackFactory(CallbackData, prefix="link"):
     action: str
-    position: Optional[int] = None
+    position: int
 
 
-def dynamic_links(links_list: Sequence[Row], has_link: bool, position: int = 1) -> InlineKeyboardMarkup:
+def dynamic_links(links_list: list, has_link: bool, position: int = 1) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     if has_link:
