@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 from ScrapItUp.ids_dict import groups_ids
-from bot.phrases import days_short, lesson_types
+from bot.phrases import days_short, lesson_types, lesson_number
 
 
 PATH = Path.cwd()
@@ -19,29 +19,25 @@ def path_creator(group_id: str) -> None:
 
 
 def add_lesson(lesson: dict) -> str:
-    lesson_number = "Номер уроку: " + str(lesson['LessonNumber'])
-    lesson_start_end = "⏰З <b>" + \
-        lesson['StartAt'] + "</b> До <b>" + lesson['EndAt'] + "</b>"
-    lesson_name_type = "Назва: <b>" + \
-        lesson['LessonName'] + ", " + \
-        lesson_types[f"{lesson['LessonType']}"] + "</b>"
+    lesson_number_start_end = (lesson_number[str(lesson['LessonNumber'])] + " ⎪ <b><i>"
+                               + lesson['StartAt'] + " - " + lesson['EndAt'] + "</i></b> ⎪ "
+                               + lesson_types[f"{lesson['LessonType']}"])
+    lesson_name_type = "┗ <b>" + lesson['LessonName'] + "</b>"
 
     if lesson.get('TeacherFullName') is not None:
-        lesson_teacher_name = "Викладач: " + lesson['TeacherFullName']
+        lesson_teacher_name = "💼 " + lesson['TeacherFullName']
     else:
-        lesson_teacher_name = "Викладач: " + lesson['TeacherShortName']
+        lesson_teacher_name = "💼 " + lesson['TeacherShortName']
 
-    lesson_cabinet = "Аудиторія: <b>" + lesson['LessonCabinet'] + "</b>"
+    # lesson_cabinet = "Аудиторія: <b>" + lesson['LessonCabinet'] + "</b>"
 
-    return f"""{lesson_number}
-{lesson_start_end}
+    return f"""{lesson_number_start_end}
 {lesson_name_type}
-{lesson_teacher_name}
-{lesson_cabinet}\n
+{lesson_teacher_name}\n
 """
 
 
-def divide_sub_lesson(lesson: dict):
+def divide_sub_lesson(lesson: dict) -> list[str]:
     first_sub_lesson = {
         "LessonName": lesson['LessonName'][0],
         "TeacherShortName": lesson['TeacherShortName'][0],
@@ -66,7 +62,7 @@ def divide_sub_lesson(lesson: dict):
     return divided_lessons
 
 
-def constructor(current_week: dict):
+def constructor(current_week: dict) -> list[list[str]]:
 
     total_week_1_subgroup = []
     total_week_2_subgroup = []
@@ -76,10 +72,13 @@ def constructor(current_week: dict):
         current_day_lessons = []
         str_current_day_1sub = ""
         str_current_day_2sub = ""
+        week_num = ""
 
         for key, day in current_week.items():
+            if key == 'week_info':
+                week_num = day[0]
             if isinstance(day, dict) and key == day_short:
-                date = f"> 🗓{day['DayDate']} ({day['DayNameLong']})\n\n"
+                date = f"└ 🗓<b>{day['DayDate']}</b> ({day['DayNameLong']}, {week_num}-ий Тиждень)\n\n"
                 str_current_day_1sub += date
                 str_current_day_2sub += date
                 for key2, lesson in day.items():
@@ -126,13 +125,13 @@ def week_construct(week: str) -> None:
         i = 1
         for day in current_week[0]:
             with open(f'{PATH}/ScrapItUp/Groups/{group_id}/{week_num}/{i}/IP1.txt', 'w') as f:
-                f.write(f"> {key}, 1 Підгрупа\n" + day)
+                f.write(day)
             i += 1
 
         i = 1
         for day in current_week[1]:
             with open(f'{PATH}/ScrapItUp/Groups/{group_id}/{week_num}/{i}/IP2.txt', 'w') as f:
-                f.write(f"> {key}, 2 Підгрупа\n" + day)
+                f.write(day)
             i += 1
 
 # ------------------------------------------------------------------------
