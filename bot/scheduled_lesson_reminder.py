@@ -28,7 +28,7 @@ async def remind_collector(bot: Bot, session_maker) -> None:
             # group[3] - lesson_type
             # group[4] - teacher_short_name
 
-            # Один урок у двох підгрупах
+            # Один урок у двох підгрупах (або вся група)
             if group[1] == 0:
                 users1 = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=1)
                 users2 = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=2)
@@ -38,29 +38,18 @@ async def remind_collector(bot: Bot, session_maker) -> None:
                                       lesson_type=group[3],
                                       teacher_short_name=group[4]
                                       )
-                await remind_sender(bot, list(users1+users2), [group[2], group[3], group[4]], link)
+                await remind_sender(bot, list(users1+users2), [group[2], group[3], group[4]], link[0])
 
-            # Лише 1 підгрупа
-            elif group[1] == 1:
-                users = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=1)
+            # Лише 1 чи 2 підгрупа
+            else:
+                users = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=group[1])
                 link = await get_link(session_maker=session_maker,
                                       group_id=group[0],
                                       lesson_name=group[2],
                                       lesson_type=group[3],
                                       teacher_short_name=group[4]
                                       )
-                await remind_sender(bot=bot, users_ids=users, lesson=[group[2], group[3], group[4]], link=link)
-
-            # Лише 2 підгрупа
-            elif group[1] == 2:
-                users = await get_users_to_notify(session_maker=session_maker, group_id=group[0], subgroup=2)
-                link = await get_link(session_maker=session_maker,
-                                      group_id=group[0],
-                                      lesson_name=group[2],
-                                      lesson_type=group[3],
-                                      teacher_short_name=group[4]
-                                      )
-                await remind_sender(bot=bot, users_ids=users, lesson=[group[2], group[3], group[4]], link=link)
+                await remind_sender(bot=bot, users_ids=users, lesson=[group[2], group[3], group[4]], link=link[0])
 
 
 async def remind_sender(bot: Bot, users_ids: list[int], lesson: list[str], link: str) -> None:
