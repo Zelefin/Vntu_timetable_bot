@@ -9,9 +9,10 @@ from .donate import donate_router
 from .links import links_router
 from .presidents import presidents_router
 from .profile import profile_router
+from .inline_mode import inline_router
 
 
 __all__ = ['routers']
 
 routers = (start_router, registration_router, design_router, delete_me_router, mailing_router, feedback_router,
-           update_timetable_router, donate_router, links_router, presidents_router, profile_router)
+           update_timetable_router, donate_router, links_router, presidents_router, profile_router, inline_router)
