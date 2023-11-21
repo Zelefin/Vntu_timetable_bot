@@ -2,7 +2,7 @@
 > Readme file is in progress
 
 # VNTU Timetable Bot
-This repo contains the source code of [vntu_timetable_bot](t.me/vntu_timetable_bot) - bot that provides timetable of classes by scraping this information from JetIQ presonal cabinet.
+This repo contains the source code of [vntu_timetable_bot](https://t.me/vntu_timetable_bot) - bot that provides timetable of classes by scraping this information from JetIQ presonal cabinet.
 
 ## Table of Contents
 - [Installation](#installation)
