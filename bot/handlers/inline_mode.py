@@ -33,7 +33,8 @@ async def show_user_links(inline_query: InlineQuery):
                 title=matching_groups[0] + " 1 підгрупа",
                 description="Розклад на сьогодні🌇",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
-                    user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "1"}
+                    user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "1"},
+                    day=cur_day()
                 ))
             ),
             InlineQueryResultArticle(
@@ -50,7 +51,8 @@ async def show_user_links(inline_query: InlineQuery):
                 title=matching_groups[0] + " 2 підгрупа",
                 description="Розклад на сьогодні🌇",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
-                    user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "2"}
+                    user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "2"},
+                    day=cur_day()
                 ))
             ),
             InlineQueryResultArticle(

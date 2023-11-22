@@ -1,4 +1,4 @@
-from bot.days_weeks_stuff import cur_week, cur_day
+from bot.days_weeks_stuff import cur_week
 from ScrapItUp.ids_dict import groups_ids
 from pathlib import Path
 
@@ -8,7 +8,7 @@ if PATH.name == "bot":
     PATH = PATH.parent
 
 
-async def send_lessons(user_info: dict, day: int = cur_day(), week: int = cur_week()) -> str:
+async def send_lessons(user_info: dict, day: int, week: int = cur_week()) -> str:
     group = str(user_info['group'])  # group id
     subgroup = str(user_info['subgroup'])  # its integer already
 
