@@ -12,7 +12,10 @@ class DesignCallbackFactory(CallbackData, prefix="design"):
     week: Optional[int] = None
 
 
-def get_design_kb(chosen_day: int = 0, w: int = cur_week()) -> InlineKeyboardMarkup:
+def get_design_kb(chosen_day: int = 0, w: int = None) -> InlineKeyboardMarkup:
+    # TODO: maybe this is not the best idea
+    w = w if w is not None else cur_week()
+
     builder = InlineKeyboardBuilder()
     # Here is simple function to replace button text if it's pressed
     def check_number(num, target): return 0 if num == target else num
