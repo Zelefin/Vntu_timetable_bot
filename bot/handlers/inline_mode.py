@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 from bot.Groups_func import send_lessons
 from ScrapItUp.ids_dict import groups_ids
-from bot.days_weeks_stuff import cur_day
+from bot.days_weeks_stuff import cur_day, cur_week
 
 inline_router = Router(name='inline')
 
@@ -34,7 +34,8 @@ async def show_user_links(inline_query: InlineQuery):
                 description="Розклад на сьогодні🌇",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
                     user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "1"},
-                    day=cur_day()
+                    day=cur_day(),
+                    week=cur_week()
                 ))
             ),
             InlineQueryResultArticle(
@@ -43,7 +44,8 @@ async def show_user_links(inline_query: InlineQuery):
                 description="Розклад на завтра🏙",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
                     user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "1"},
-                    day=cur_day()+1
+                    day=cur_day()+1,
+                    week=cur_week()
                 ))
             ),
             InlineQueryResultArticle(
@@ -52,7 +54,8 @@ async def show_user_links(inline_query: InlineQuery):
                 description="Розклад на сьогодні🌇",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
                     user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "2"},
-                    day=cur_day()
+                    day=cur_day(),
+                    week=cur_week()
                 ))
             ),
             InlineQueryResultArticle(
@@ -61,7 +64,8 @@ async def show_user_links(inline_query: InlineQuery):
                 description="Розклад на завтра🏙",
                 input_message_content=InputTextMessageContent(message_text=await send_lessons(
                     user_info={'group': groups_ids[matching_groups[0]], 'subgroup': "2"},
-                    day=cur_day()+1
+                    day=cur_day()+1,
+                    week=cur_week()
                 ))
             )
         ]

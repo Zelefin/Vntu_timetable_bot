@@ -8,7 +8,8 @@ if PATH.name == "bot":
     PATH = PATH.parent
 
 
-async def send_lessons(user_info: dict, day: int, week: int = cur_week()) -> str:
+async def send_lessons(user_info: dict, day: int, week: int) -> str:
+    # We can't set values by default, because they're changing
     group = str(user_info['group'])  # group id
     subgroup = str(user_info['subgroup'])  # its integer already
 

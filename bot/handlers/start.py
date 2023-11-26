@@ -11,6 +11,7 @@ from bot.phrases import start_phrases
 from bot.Groups_func import send_lessons
 from bot.middlewares import StartMessageMiddleware
 from bot.keyboards import groups_kb, builder_kb
+from bot.days_weeks_stuff import cur_week
 
 
 class ChoseGroup(StatesGroup):
@@ -149,7 +150,7 @@ async def subgroup_chosen_incorrectly(message: Message):
 async def days_chosen(message: Message, state: FSMContext):
     user_data = await state.get_data()
     await message.answer(
-        text=await send_lessons(user_data, days.index(message.text)+1),
+        text=await send_lessons(user_data, days.index(message.text)+1, cur_week()),
         reply_markup=ReplyKeyboardRemove()
     )
     await state.clear()
