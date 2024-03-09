@@ -51,6 +51,7 @@ def lesson_1_or_togather(lesson) -> dict:
 def lesson_2subgroups(lesson) -> dict:
 
     lesson_names = lesson.find_all(string=True, recursive=False)
+    lesson_names = [lsn for lsn in lesson_names if lsn != ' ']
 
     first_lesson_name = lesson_names[0].text[1:-1].rsplit(' ', 2)
     first_teacher_short_name = first_lesson_name[1] + " " + first_lesson_name[2]
@@ -61,6 +62,7 @@ def lesson_2subgroups(lesson) -> dict:
     second_teacher_long_name = teachersFullNames.get(second_teacher_short_name)
 
     lesson_cabinets = lesson.find_all('b')  # Все аудитории с урока
+    lesson_cabinets = [lsn for lsn in lesson_cabinets if lsn.text != ' ']
 
     discipline_id = int(lesson.get('title').split(', ')[1][9:-1])
 
@@ -126,7 +128,7 @@ def week_scrap(this_week: list) -> dict:
 
 def scrap_html_to_json():
     for key, group_id in groups_ids.items():
-        with open(f"{PATH}/ScrapItUp/Groups_html/{group_id}.html", "r", encoding="utf-8") as file:
+        with open(f"{PATH}/Groups_html/{group_id}.html", "r", encoding="utf-8") as file:
             html = file.read()
         soup = BeautifulSoup(html, "lxml")
         table = soup.find_all('table')[1]
@@ -150,5 +152,7 @@ def scrap_html_to_json():
             "next_week_dict": next_week_dict
         }
 
-        with open(f"{PATH}/ScrapItUp/Groups_json/{group_id}.json", "w") as outfile:
+        with open(f"{PATH}/Groups_json/{group_id}.json", "w") as outfile:
             json.dump(group_total_dict, outfile, indent=4, ensure_ascii=False)
+
+scrap_html_to_json()
