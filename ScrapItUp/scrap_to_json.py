@@ -62,7 +62,7 @@ def lesson_2subgroups(lesson) -> dict:
     second_teacher_long_name = teachersFullNames.get(second_teacher_short_name)
 
     lesson_cabinets = lesson.find_all('b')  # Все аудитории с урока
-    lesson_cabinets = [lsn for lsn in lesson_cabinets if lsn.text != ' ']
+    lesson_cabinets = [cab for cab in lesson_cabinets if cab.text != ' ']
 
     discipline_id = int(lesson.get('title').split(', ')[1][9:-1])
 
