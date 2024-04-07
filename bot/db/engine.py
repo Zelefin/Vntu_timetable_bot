@@ -8,7 +8,7 @@ from typing import Union
 def create_async_engine(url: Union[URL, str]) -> AsyncEngine:
     # pool_pre - debug
     # echo - console echo
-    return _create_async_engine(url=url, echo=True, pool_pre_ping=True)
+    return _create_async_engine(url=url, echo=False, pool_pre_ping=True)
 # connect_args={'encoding': 'utf8'}
 
 @DeprecationWarning
