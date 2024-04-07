@@ -128,7 +128,7 @@ def week_scrap(this_week: list) -> dict:
 
 def scrap_html_to_json():
     for key, group_id in groups_ids.items():
-        with open(f"{PATH}/Groups_html/{group_id}.html", "r", encoding="utf-8") as file:
+        with open(f"{PATH}/ScrapItUp/Groups_html/{group_id}.html", "r", encoding="utf-8") as file:
             html = file.read()
         soup = BeautifulSoup(html, "lxml")
         table = soup.find_all('table')[1]
@@ -152,5 +152,5 @@ def scrap_html_to_json():
             "next_week_dict": next_week_dict
         }
 
-        with open(f"{PATH}/Groups_json/{group_id}.json", "w") as outfile:
+        with open(f"{PATH}/ScrapItUp/Groups_json/{group_id}.json", "w") as outfile:
             json.dump(group_total_dict, outfile, indent=4, ensure_ascii=False)
