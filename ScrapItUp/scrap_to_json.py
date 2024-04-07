@@ -154,5 +154,3 @@ def scrap_html_to_json():
 
         with open(f"{PATH}/Groups_json/{group_id}.json", "w") as outfile:
             json.dump(group_total_dict, outfile, indent=4, ensure_ascii=False)
-
-scrap_html_to_json()

@@ -29,11 +29,12 @@ def add_lesson(lesson: dict) -> str:
     else:
         lesson_teacher_name = "💼 " + lesson['TeacherShortName']
 
-    # lesson_cabinet = "Аудиторія: <b>" + lesson['LessonCabinet'] + "</b>"
+    lesson_cabinet = "🏫 <b>" + lesson['LessonCabinet'] + "</b>"
 
     return f"""{lesson_number_start_end}
 {lesson_name_type}
-{lesson_teacher_name}\n
+{lesson_teacher_name}
+{lesson_cabinet}\n
 """
 
 
