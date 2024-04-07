@@ -29,7 +29,7 @@ def add_lesson(lesson: dict) -> str:
     else:
         lesson_teacher_name = "💼 " + lesson['TeacherShortName']
 
-    lesson_cabinet = "🏫 <b>" + lesson['LessonCabinet'] + "</b>"
+    lesson_cabinet = "🏫 " + lesson['LessonCabinet']
 
     return f"""{lesson_number_start_end}
 {lesson_name_type}
