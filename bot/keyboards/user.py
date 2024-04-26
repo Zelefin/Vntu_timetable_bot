@@ -24,9 +24,9 @@ def subgroups_keyboard():
     )
 
 
-def share_button():
+def share_button(faculty_id: int | str, group_id: int | str):
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Поділитися", switch_inline_query="210_10840")]
+            [InlineKeyboardButton(text="Поділитися", switch_inline_query=f"{faculty_id}_{group_id}")]
         ]
     )
