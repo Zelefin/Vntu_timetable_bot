@@ -1,6 +1,6 @@
 import logging
 
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
@@ -67,8 +67,9 @@ async def handle_group_msg(message: Message, state: FSMContext, api: VntuTimetab
 
 @user_router.callback_query(RegistrationState.subgroup, F.data.in_(["0", "1", "2"]))
 async def handle_subgroup_callback(
-    callback: CallbackQuery, state: FSMContext, repo: RequestsRepo
+    callback: CallbackQuery, state: FSMContext, repo: RequestsRepo, bot: Bot
 ):
+    bot_info = await bot.get_me()
     data = await state.get_data()
     try:
         await repo.users.update_user_faculty_and_group(
@@ -78,7 +79,13 @@ async def handle_subgroup_callback(
             group_name=data["group_name"],
             subgroup=int(callback.data),
         )
-        await callback.message.edit_text(text="Ваші данні було успішно збережено!")
+        await callback.message.edit_text(
+            text="Ваші данні було успішно збережено!\n\n"
+            f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
+            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>web app</a>"
+            f" або як повідомлення при команді <i>/inline</i>",
+            reply_markup=kb.share_button(),
+        )
     except Exception as e:
         logging.error(e)
         await callback.message.edit_text("Виникла помилка при збереженні данних🤕")
