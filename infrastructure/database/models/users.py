@@ -1,7 +1,7 @@
 from typing import Optional
 
 from sqlalchemy import String
-from sqlalchemy import text, BIGINT, Boolean, true
+from sqlalchemy import BIGINT, Boolean, true
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base, TimestampMixin, TableNameMixin
@@ -16,7 +16,6 @@ class User(Base, TimestampMixin, TableNameMixin):
         username (Mapped[Optional[str]]): The username of the user.
         full_name (Mapped[str]): The full name of the user.
         active (Mapped[bool]): Indicates whether the user is active or not.
-        language (Mapped[str]): The language preference of the user.
 
     Methods:
         __repr__(): Returns a string representation of the User object.
@@ -31,10 +30,13 @@ class User(Base, TimestampMixin, TableNameMixin):
     """
 
     user_id: Mapped[int] = mapped_column(BIGINT, primary_key=True, autoincrement=False)
-    username: Mapped[Optional[str]] = mapped_column(String(128))
+    username: Mapped[str | None] = mapped_column(String(128))
     full_name: Mapped[str] = mapped_column(String(128))
+    faculty_id: Mapped[int | None] = mapped_column(server_default=None)
+    group_name: Mapped[str | None] = mapped_column(server_default=None)
+    group_id: Mapped[int | None] = mapped_column(server_default=None)
+    subgroup: Mapped[int | None] = mapped_column(server_default=None)
     active: Mapped[bool] = mapped_column(Boolean, server_default=true())
-    language: Mapped[str] = mapped_column(String(10), server_default=text("'en'"))
 
     def __repr__(self):
         return f"<User {self.user_id} {self.username} {self.full_name}>"

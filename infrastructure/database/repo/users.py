@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy import update
 from sqlalchemy.dialects.postgresql import insert
 
 from infrastructure.database.models import User
@@ -11,14 +12,12 @@ class UserRepo(BaseRepo):
         self,
         user_id: int,
         full_name: str,
-        language: str,
         username: Optional[str] = None,
-    ):
+    ) -> User:
         """
         Creates or updates a new user in the database and returns the user object.
         :param user_id: The user's ID.
         :param full_name: The user's full name.
-        :param language: The user's language.
         :param username: The user's username. It's an optional parameter.
         :return: User object, None if there was an error while making a transaction.
         """
@@ -29,7 +28,6 @@ class UserRepo(BaseRepo):
                 user_id=user_id,
                 username=username,
                 full_name=full_name,
-                language=language,
             )
             .on_conflict_do_update(
                 index_elements=[User.user_id],
@@ -41,6 +39,37 @@ class UserRepo(BaseRepo):
             .returning(User)
         )
         result = await self.session.execute(insert_stmt)
+
+        await self.session.commit()
+        return result.scalar_one()
+
+    async def update_user_faculty_and_group(
+        self,
+        user_id: int,
+        faculty_id: int,
+        group_id: int,
+        group_name: int,
+        subgroup: int,
+    ) -> User:
+        """
+        :param user_id: The user's ID.
+        :param faculty_id: The user's faculty ID.
+        :param group_id: The user's group ID.
+        :param group_name: The user's group name.
+        :param subgroup: The user's subgroup.
+        :return: User object, None if there was an error while making a transaction.
+        """
+        update_stmt = (
+            update(User)
+            .where(User.user_id == user_id)
+            .values(
+                faculty_id=faculty_id,
+                group_id=group_id,
+                group_name=group_name,
+                subgroup=subgroup,
+            )
+        ).returning(User)
+        result = await self.session.execute(update_stmt)
 
         await self.session.commit()
         return result.scalar_one()
