@@ -82,9 +82,10 @@ async def handle_subgroup_callback(
         await callback.message.edit_text(
             text="Ваші данні було успішно збережено!\n\n"
             f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
-            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>web app</a>"
+            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
+            f"web app</a>"
             f" або як повідомлення при команді <i>/inline</i>",
-            reply_markup=kb.share_button(),
+            reply_markup=kb.share_button(faculty_id=data['faculty_id'], group_id=data['group_id']),
         )
     except Exception as e:
         logging.error(e)
