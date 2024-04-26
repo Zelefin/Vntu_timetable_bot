@@ -12,6 +12,7 @@ from bot.middlewares.config import ConfigMiddleware
 from bot.middlewares.database import DatabaseMiddleware
 from bot.services import broadcaster
 from infrastructure.database.setup import create_engine, create_session_pool
+from infrastructure.vntu_timetable_api import VntuTimetableApi
 
 
 async def on_startup(bot: Bot, admin_id: int):
@@ -68,24 +69,27 @@ def setup_logging():
 async def main():
     setup_logging()
 
-    config = load_config(".env")
+    config = load_config()
+    api = VntuTimetableApi()
 
     engine = create_engine(config)
     session_pool = create_session_pool(engine)
 
     storage = RedisStorage.from_url(
-            config.redis.make_connection_string(),
-            key_builder=DefaultKeyBuilder(with_bot_id=True, with_destiny=True),
-        )
+        config.redis.make_connection_string(),
+        key_builder=DefaultKeyBuilder(with_bot_id=True, with_destiny=True),
+    )
 
     bot = Bot(token=config.bot.token, default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher(storage=storage)
+    dp["api"] = api
 
     dp.include_routers(*routers_list)
 
     register_global_middlewares(dp, config, session_pool)
 
     await on_startup(bot, config.admin)
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
