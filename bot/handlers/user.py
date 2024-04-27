@@ -1,7 +1,7 @@
 import logging
 
 from aiogram import Router, F, Bot
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
@@ -60,9 +60,10 @@ async def handle_group_msg(message: Message, state: FSMContext, api: VntuTimetab
                 await message.answer(
                     text="Оберіть вашу підгрупу:", reply_markup=kb.subgroups_keyboard()
                 )
+                await state.set_state(RegistrationState.subgroup)
                 break
-
-    await state.set_state(RegistrationState.subgroup)
+    else:
+        await message.answer("Такої групи не знайдено. Спробуйте знову.")
 
 
 @user_router.callback_query(RegistrationState.subgroup, F.data.in_(["0", "1", "2"]))
@@ -83,11 +84,39 @@ async def handle_subgroup_callback(
             text="Ваші данні було успішно збережено!\n\n"
             f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
             f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
-            f"web app</a>"
+            f"Web App</a>"
             f" або як повідомлення при команді <i>/inline</i>",
-            reply_markup=kb.share_button(faculty_id=data['faculty_id'], group_id=data['group_id']),
+            reply_markup=kb.share_button(
+                faculty_id=data["faculty_id"], group_id=data["group_id"]
+            ),
         )
     except Exception as e:
         logging.error(e)
         await callback.message.edit_text("Виникла помилка при збереженні данних🤕")
     await state.clear()
+
+
+@user_router.message(Command("timetable"))
+async def timetable_app(message: Message, user: User, bot: Bot):
+    bot_info = await bot.get_me()
+    if user.group_id and user.faculty_id:
+        # It's kinda makes no sense, because we can't have faculty id w/o group id, but Pycharm will raise warning
+        # Expected type 'int | str', got 'InstrumentedAttribute[_T_co]' instead (if we check only group or faculty)
+        await message.answer(
+            text=f"<b>Розклад для групи "
+            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={user.faculty_id}_{user.group_id}'>"
+            f"{user.group_name}</a></b>",
+            reply_markup=kb.share_button(
+                faculty_id=user.faculty_id, group_id=user.group_id
+            ),
+        )
+    else:
+        await message.answer("Спочатку зареєструйтесь в боті командою <i>/start</i>")
+
+
+@user_router.message(Command("inline"))
+async def timetable_with_inline_kb(message: Message, user: User):
+    if user.faculty_id:
+        await message.answer(text="gello")
+    else:
+        await message.answer("Спочатку зареєструйтесь в боті командою <i>/start</i>")
