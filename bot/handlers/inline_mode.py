@@ -22,7 +22,7 @@ async def handle_inline_query(
         return
 
     group_name = None
-    for faculty in faculties["data"]:
+    for faculty in faculties.get("data"):
         if faculty["id"] == faculty_id:
             for group in faculty["groups"]:
                 if group["id"] == group_id:
@@ -33,7 +33,7 @@ async def handle_inline_query(
             InlineQueryResultArticle(
                 id="share_article",
                 title="Натисніть тут щоб поділитися!",
-                description=f"Поділіться зручним web app для перегляду розкладу групи {group_name}",
+                description=f"Поділіться зручним Web App для перегляду розкладу групи {group_name}",
                 input_message_content=InputTextMessageContent(
                     message_text=f"<b>Розклад для групи "
                     f"<a href='https://t.me/{bot_info.username}/timetable?startapp={faculty_id}_{group_id}'>"
