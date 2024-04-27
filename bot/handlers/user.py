@@ -1,12 +1,17 @@
 import logging
+from contextlib import suppress
 
 from aiogram import Router, F, Bot
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
 import bot.keyboards.user as kb
+from bot.misc.callback_data import InlineCallbackFactory
+from bot.misc.current_date import current_day, current_week
 from bot.misc.states import RegistrationState
+from bot.misc.timetable_message import timetable_message_generator
 from infrastructure.database.models import User
 from infrastructure.database.repo.requests import RequestsRepo
 from infrastructure.vntu_timetable_api import VntuTimetableApi
@@ -115,8 +120,71 @@ async def timetable_app(message: Message, user: User, bot: Bot):
 
 
 @user_router.message(Command("inline"))
-async def timetable_with_inline_kb(message: Message, user: User):
-    if user.faculty_id:
-        await message.answer(text="gello")
+async def timetable_with_inline_kb(message: Message, api: VntuTimetableApi, user: User):
+    if user.group_id and user.faculty_id:
+        # Same warning even if we only use group id :/
+        timetable = await api.get_group_timetable(group_id=user.group_id)
+        if current_day() > 4:
+            day = 0
+            week = "firstWeek" if current_week() == "secondWeek" else "secondWeek"
+        else:
+            day = current_day()
+            week = current_week()
+        await message.answer(
+            text=timetable_message_generator(
+                timetable=timetable,
+                day=day,
+                week=week,
+            ),
+            reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
+        )
     else:
         await message.answer("Спочатку зареєструйтесь в боті командою <i>/start</i>")
+
+
+@user_router.callback_query(InlineCallbackFactory.filter())
+async def handle_inline_timetable_callback(
+    callback: CallbackQuery,
+    callback_data: InlineCallbackFactory,
+    api: VntuTimetableApi,
+    user: User,
+):
+    if user.group_id and user.faculty_id:
+        timetable = await api.get_group_timetable(group_id=user.group_id)
+    else:
+        await callback.message.edit_text(
+            text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
+        )
+        await callback.answer()
+        return
+
+    day = callback_data.day
+    week = callback_data.week
+    match day:
+        case -1:
+            # today
+            if current_day() > 4:
+                day = 0
+                week = "firstWeek" if current_week() == "secondWeek" else "secondWeek"
+            else:
+                day = current_day()
+        case -2:
+            # tomorrow
+            if current_day() >= 4:
+                day = 1
+                week = "firstWeek" if current_week() == "secondWeek" else "secondWeek"
+            else:
+                day = current_day() + 1
+        case _:
+            pass
+
+    with suppress(TelegramBadRequest):
+        await callback.message.edit_text(
+            text=timetable_message_generator(
+                timetable=timetable,
+                day=day,
+                week=week,
+            ),
+            reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
+        )
+    await callback.answer()
