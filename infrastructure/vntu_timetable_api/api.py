@@ -8,3 +8,6 @@ class VntuTimetableApi(BaseClient):
 
     async def get_faculties(self):
         return await self._make_request(method="get", url="/v0/faculties")
+
+    async def get_group_timetable(self, group_id: int):
+        return await self._make_request(method="get", url=f"/v0/groups/{group_id}")
