@@ -1,3 +1,4 @@
+import json
 import logging
 from contextlib import suppress
 
@@ -6,6 +7,7 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
+from redis.asyncio import Redis
 
 import bot.keyboards.user as kb
 from bot.misc.callback_data import InlineCallbackFactory
@@ -43,14 +45,20 @@ async def reg_or_upd_data(callback: CallbackQuery, state: FSMContext):
 
 
 @user_router.message(RegistrationState.group)
-async def handle_group_msg(message: Message, state: FSMContext, api: VntuTimetableApi):
-    result, faculties = await api.get_faculties()
-    if result != 200:
-        await message.answer(
-            "Упс... Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
-        )
-        await state.clear()
-        return
+async def handle_group_msg(
+    message: Message, state: FSMContext, api: VntuTimetableApi, redis: Redis
+):
+    if faculties_redis := await redis.get("faculties"):
+        faculties = json.loads(faculties_redis)
+    else:
+        result, faculties = await api.get_faculties()
+        if result != 200:
+            await message.answer(
+                "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+            )
+            await state.clear()
+            return
+        await redis.set("faculties", json.dumps(faculties), ex=1800)
 
     for faculty in faculties.get("data"):
         for group in faculty["groups"]:
@@ -120,22 +128,39 @@ async def timetable_app(message: Message, user: User, bot: Bot):
 
 
 @user_router.message(Command("inline"))
-async def timetable_with_inline_kb(message: Message, api: VntuTimetableApi, user: User):
+async def timetable_with_inline_kb(
+    message: Message, api: VntuTimetableApi, user: User, redis: Redis
+):
     if user.group_id and user.faculty_id:
         # Same warning even if we only use group id :/
-        timetable = await api.get_group_timetable(group_id=user.group_id)
         if current_day() > 4:
             day = 0
             week = "firstWeek" if current_week() == "secondWeek" else "secondWeek"
         else:
             day = current_day()
             week = current_week()
+
+        if timetable_list := await redis.get(str(user.group_id)):
+            timetable = json.loads(timetable_list)[week][day]
+        else:
+            status, timetable_response = await api.get_group_timetable(
+                group_id=user.group_id
+            )
+            if status != 200:
+                await message.answer(
+                    "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+                )
+                return
+            timetable_list = timetable_message_generator(
+                timetable=timetable_response,
+                group_name=user.group_name,
+                subgroup=user.subgroup,
+            )
+            await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
+            timetable = timetable_list[week][day]
+
         await message.answer(
-            text=timetable_message_generator(
-                timetable=timetable,
-                day=day,
-                week=week,
-            ),
+            text=timetable,
             reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
         )
     else:
@@ -147,17 +172,9 @@ async def handle_inline_timetable_callback(
     callback: CallbackQuery,
     callback_data: InlineCallbackFactory,
     api: VntuTimetableApi,
+    redis: Redis,
     user: User,
 ):
-    if user.group_id and user.faculty_id:
-        timetable = await api.get_group_timetable(group_id=user.group_id)
-    else:
-        await callback.message.edit_text(
-            text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
-        )
-        await callback.answer()
-        return
-
     day = callback_data.day
     week = callback_data.week
     match day:
@@ -178,13 +195,36 @@ async def handle_inline_timetable_callback(
         case _:
             pass
 
+    if user.group_id and user.faculty_id:
+        if timetable_list := await redis.get(str(user.group_id)):
+            timetable = json.loads(timetable_list)[week][day]
+        else:
+            status, timetable_response = await api.get_group_timetable(
+                group_id=user.group_id
+            )
+            if status != 200:
+                await callback.message.edit_text(
+                    "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+                )
+                await callback.answer()
+                return
+            timetable_list = timetable_message_generator(
+                timetable=timetable_response,
+                group_name=user.group_name,
+                subgroup=user.subgroup,
+            )
+            await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
+            timetable = timetable_list[week][day]
+    else:
+        await callback.message.edit_text(
+            text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
+        )
+        await callback.answer()
+        return
+
     with suppress(TelegramBadRequest):
         await callback.message.edit_text(
-            text=timetable_message_generator(
-                timetable=timetable,
-                day=day,
-                week=week,
-            ),
+            text=timetable,
             reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
         )
     await callback.answer()
