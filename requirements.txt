@@ -27,6 +27,7 @@ pydantic==2.7.1
 pydantic-settings==2.2.1
 pydantic_core==2.18.2
 python-dotenv==1.0.1
+redis==5.0.4
 SQLAlchemy==2.0.29
 typing_extensions==4.11.0
 ujson==5.9.0
