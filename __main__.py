@@ -83,6 +83,7 @@ async def main():
     bot = Bot(token=config.bot.token, default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher(storage=storage)
     dp["api"] = api
+    dp["redis"] = storage.redis
 
     dp.include_routers(*routers_list)
 
