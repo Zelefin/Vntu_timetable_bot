@@ -1,9 +1,12 @@
+import json
+
 from aiogram import Router, Bot, F
 from aiogram.types import (
     InlineQuery,
     InlineQueryResultArticle,
     InputTextMessageContent,
 )
+from redis.asyncio import Redis
 
 from bot.keyboards.user import share_button
 from infrastructure.vntu_timetable_api import VntuTimetableApi
@@ -13,13 +16,18 @@ inline_mode_router = Router()
 
 @inline_mode_router.inline_query(F.query.regexp(r"^\d+\_\d+$"))
 async def handle_inline_query(
-    inline_query: InlineQuery, bot: Bot, api: VntuTimetableApi
+    inline_query: InlineQuery, bot: Bot, api: VntuTimetableApi, redis: Redis
 ):
     faculty_id, group_id = [int(value) for value in inline_query.query.split("_")]
     bot_info = await bot.get_me()
-    response, faculties = await api.get_faculties()
-    if response != 200:
-        return
+
+    if faculties_redis := await redis.get("faculties"):
+        faculties = json.loads(faculties_redis)
+    else:
+        response, faculties = await api.get_faculties()
+        if response != 200:
+            return
+        await redis.set("faculties", json.dumps(faculties), ex=1800)
 
     group_name = None
     for faculty in faculties.get("data"):
@@ -40,7 +48,7 @@ async def handle_inline_query(
                     f"{group_name}</a></b>"
                 ),
                 reply_markup=share_button(faculty_id=faculty_id, group_id=group_id),
-                thumbnail_url="https://vntu.edu.ua/projects/brandbook/logo11.png",
+                thumbnail_url="https://i.ibb.co/dDrW9P0/logo10-1.jpg",
             )
         ]
     else:
