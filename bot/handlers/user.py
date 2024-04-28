@@ -140,24 +140,14 @@ async def timetable_with_inline_kb(
             day = current_day()
             week = current_week()
 
-        if timetable_list := await redis.get(str(user.group_id)):
-            timetable = json.loads(timetable_list)[week][day]
-        else:
-            status, timetable_response = await api.get_group_timetable(
-                group_id=user.group_id
+        timetable = await get_timetable(
+            user=user, redis=redis, api=api, week=week, day=day
+        )
+        if not timetable:
+            await message.answer(
+                "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
             )
-            if status != 200:
-                await message.answer(
-                    "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
-                )
-                return
-            timetable_list = timetable_message_generator(
-                timetable=timetable_response,
-                group_name=user.group_name,
-                subgroup=user.subgroup,
-            )
-            await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
-            timetable = timetable_list[week][day]
+            return
 
         await message.answer(
             text=timetable,
@@ -196,35 +186,47 @@ async def handle_inline_timetable_callback(
             pass
 
     if user.group_id and user.faculty_id:
-        if timetable_list := await redis.get(str(user.group_id)):
-            timetable = json.loads(timetable_list)[week][day]
-        else:
-            status, timetable_response = await api.get_group_timetable(
-                group_id=user.group_id
+        timetable = await get_timetable(
+            user=user, redis=redis, api=api, week=week, day=day
+        )
+
+        if not timetable:
+            await callback.message.edit_text(
+                "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
             )
-            if status != 200:
-                await callback.message.edit_text(
-                    "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
-                )
-                await callback.answer()
-                return
-            timetable_list = timetable_message_generator(
-                timetable=timetable_response,
-                group_name=user.group_name,
-                subgroup=user.subgroup,
+            return
+
+        with suppress(TelegramBadRequest):
+            await callback.message.edit_text(
+                text=timetable,
+                reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
             )
-            await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
-            timetable = timetable_list[week][day]
     else:
         await callback.message.edit_text(
             text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
         )
-        await callback.answer()
-        return
 
-    with suppress(TelegramBadRequest):
-        await callback.message.edit_text(
-            text=timetable,
-            reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
-        )
     await callback.answer()
+
+
+async def get_timetable(
+    user: User, redis: Redis, api: VntuTimetableApi, week: str, day: int
+) -> str | None:
+    if timetable_list := await redis.get(str(user.group_id)):
+        timetable = json.loads(timetable_list)[week][day]
+    else:
+        status, timetable_response = await api.get_group_timetable(
+            group_id=user.group_id
+        )
+        if status != 200:
+
+            return
+        timetable_list = timetable_message_generator(
+            timetable=timetable_response,
+            group_name=user.group_name,
+            subgroup=user.subgroup,
+        )
+        await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
+        timetable = timetable_list[week][day]
+
+    return timetable
