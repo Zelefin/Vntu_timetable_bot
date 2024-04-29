@@ -42,7 +42,10 @@ async def yes_no_mailing(
         data = await state.get_data()
         await callback.message.edit_text("Розсилку розпочато!")
         count = await broadcaster.broadcast(
-            bot=bot, users=await repo.users.all_users_ids(), text=data["text"]
+            bot=bot,
+            users=await repo.users.all_users_ids(),
+            text=data["text"],
+            repo=repo,
         )
         await callback.message.answer(text=f"Успішно розіслано: {count} юзерам")
     else:
