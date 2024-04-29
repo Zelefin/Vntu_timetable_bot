@@ -1,6 +1,4 @@
-from typing import Optional
-
-from sqlalchemy import update
+from sqlalchemy import update, select
 from sqlalchemy.dialects.postgresql import insert
 
 from infrastructure.database.models import User
@@ -12,7 +10,7 @@ class UserRepo(BaseRepo):
         self,
         user_id: int,
         full_name: str,
-        username: Optional[str] = None,
+        username: str | None = None,
     ) -> User:
         """
         Creates or updates a new user in the database and returns the user object.
@@ -28,12 +26,14 @@ class UserRepo(BaseRepo):
                 user_id=user_id,
                 username=username,
                 full_name=full_name,
+                active=True,
             )
             .on_conflict_do_update(
                 index_elements=[User.user_id],
                 set_=dict(
                     username=username,
                     full_name=full_name,
+                    active=True,
                 ),
             )
             .returning(User)
@@ -73,3 +73,12 @@ class UserRepo(BaseRepo):
 
         await self.session.commit()
         return result.scalar_one()
+
+    async def all_users_ids(self) -> list[int]:
+        return list(
+            (
+                await self.session.scalars(
+                    select(User.user_id).where(User.active == True)
+                )
+            ).all()
+        )
