@@ -5,6 +5,8 @@ from aiogram import Bot
 from aiogram import exceptions
 from aiogram.types import InlineKeyboardMarkup
 
+from infrastructure.database.repo.requests import RequestsRepo
+
 
 async def send_message(
     bot: Bot,
@@ -56,6 +58,7 @@ async def broadcast(
     text: str,
     disable_notification: bool = False,
     reply_markup: InlineKeyboardMarkup = None,
+    repo: RequestsRepo | None = None,
 ) -> int:
     """
     Simple broadcaster.
@@ -64,6 +67,7 @@ async def broadcast(
     :param text: Text of the message.
     :param disable_notification: Disable notification or not.
     :param reply_markup: Reply markup.
+    :param repo: Database repository.
     :return: Count of messages.
     """
     count = 0
@@ -73,6 +77,9 @@ async def broadcast(
                 bot, user_id, text, disable_notification, reply_markup
             ):
                 count += 1
+            else:
+                if repo:
+                    await repo.users.inactive_user(user_id=user_id)
             await asyncio.sleep(
                 0.05
             )  # 20 messages per second (Limit: 30 messages per second)
