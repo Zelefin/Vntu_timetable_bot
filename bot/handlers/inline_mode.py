@@ -54,4 +54,4 @@ async def handle_inline_query(
     else:
         answer = []
 
-    return inline_query.answer(answer, cache_time=1)
+    return inline_query.answer(answer)
