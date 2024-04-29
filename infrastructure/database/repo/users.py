@@ -82,3 +82,8 @@ class UserRepo(BaseRepo):
                 )
             ).all()
         )
+
+    async def inactive_user(self, user_id: int):
+        update_stmt = update(User).where(User.user_id == user_id).values(active=False)
+        await self.session.execute(update_stmt)
+        await self.session.commit()
