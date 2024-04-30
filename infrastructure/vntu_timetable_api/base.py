@@ -40,7 +40,7 @@ class BaseClient:
     @backoff.on_exception(
         backoff.expo,
         ClientError,
-        max_time=60,
+        max_time=2.5,
     )
     async def _make_request(
         self,
