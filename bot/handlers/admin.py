@@ -1,4 +1,4 @@
-from aiogram import Router, Bot
+from aiogram import Router, Bot, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
@@ -34,7 +34,7 @@ async def text_for_mailing(message: Message, state: FSMContext):
     await state.set_state(MailingState.confirmation)
 
 
-@admin_router.callback_query(MailingState.confirmation)
+@admin_router.callback_query(MailingState.confirmation, F.data.in_(["yes", "no"]))
 async def yes_no_mailing(
     callback: CallbackQuery, state: FSMContext, repo: RequestsRepo, bot: Bot
 ):
