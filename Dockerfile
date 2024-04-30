@@ -1,9 +1,9 @@
 FROM python:3.11-slim
 
-WORKDIR /usr/src/app/bot
+WORKDIR /app
 
-COPY requirements.txt /usr/src/app/bot
+COPY requirements.txt /app
 
-RUN pip install -r /usr/src/app/bot/requirements.txt
+RUN pip install -r /app/requirements.txt
 
-COPY . /usr/src/app/bot
+COPY . /app
