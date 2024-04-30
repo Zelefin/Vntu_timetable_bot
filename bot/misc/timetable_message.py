@@ -33,9 +33,9 @@ def timetable_message_generator(
 ) -> dict[str, list[str]]:
     match subgroup:
         case 1:
-            subgroup_text = ", 1 підгрупа"
+            subgroup_text = ", 1 Підгрупа"
         case 2:
-            subgroup_text = ", 2 підгрупа"
+            subgroup_text = ", 2 Підгрупа"
         case _:
             subgroup_text = ""
     group_header = f"┌ 👥{group_name}" + subgroup_text
@@ -46,7 +46,7 @@ def timetable_message_generator(
         for day in days:
             date_header = (
                 f"└ 🗓<b>{day['date']}</b> ({days_long_names[day['day']]}, "
-                + ("1-ий тиждень" if week == "firstWeek" else "2-ий тиждень")
+                + ("1-ий Тиждень" if week == "firstWeek" else "2-ий Тиждень")
                 + ")\n"
             )
             lessons = []
