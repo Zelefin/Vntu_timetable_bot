@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:alpine
+    env_file:
+      - ./.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    expose:
+      - "5423"
+    command: -p 5423
+  redis:
+    image: redis:alpine
+    volumes:
+      - cache:/data
+    restart: always
+    expose:
+      - "6379"
+    command: redis-server
+  bot:
+    build: .
+    command: sh -c "alembic upgrade head && python3 __main__.py"
+    env_file:
+      - ./.env
+    restart: always
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  pgdata:
+  cache:
+    driver: local
