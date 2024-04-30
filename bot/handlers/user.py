@@ -26,14 +26,17 @@ async def user_start(message: Message, state: FSMContext, user: User):
     await state.clear()
     if user.faculty_id:
         await message.answer(
-            text=f"Вітаю, {message.from_user.first_name}!\n\n"
-            f" > Група: {user.group_name}\n"
-            + (f" > Підгрупа: {user.subgroup}" if user.subgroup else ""),
+            text=f"Вітаю, {message.from_user.first_name}!\n"
+            "Цього бота було створено для зручного перегляду розкладу.\n\n"
+            "Ваші данні:\n"
+            f" > Група: <b>{user.group_name}</b>\n"
+            + (f" > Підгрупа: <b>{user.subgroup}</b>" if user.subgroup else ""),
             reply_markup=kb.start_keyboard(reg=True),
         )
     else:
         await message.answer(
-            text=f"Вітаю, {message.from_user.first_name}!",
+            text=f"Вітаю, {message.from_user.first_name}!\nЦього бота було створено для зручного перегляду розкладу. "
+            f'Натисніть на кнопку "Зареєструватись", щоб отримати розклад для вашої групи.',
             reply_markup=kb.start_keyboard(reg=False),
         )
 
@@ -52,7 +55,7 @@ async def handle_group_msg(
         faculties = json.loads(faculties_redis)
     else:
         result, faculties = await api.get_faculties()
-        if result != 200:
+        if result != 200 or not faculties:
             await message.answer(
                 "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
             )
@@ -74,7 +77,7 @@ async def handle_group_msg(
                     text="Оберіть вашу підгрупу:", reply_markup=kb.subgroups_keyboard()
                 )
                 await state.set_state(RegistrationState.subgroup)
-                break
+                return
     else:
         await message.answer("Такої групи не знайдено. Спробуйте знову.")
 
@@ -94,11 +97,11 @@ async def handle_subgroup_callback(
             subgroup=int(callback.data),
         )
         await callback.message.edit_text(
-            text="Ваші данні було успішно збережено!\n\n"
+            text="<i>Ваші данні було успішно збережено!</i>\n\n"
             f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
             f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
-            f"Web App</a>"
-            f" або як повідомлення при команді <i>/inline</i>",
+            "Web App</a>"
+            " або як повідомлення при команді <i>/inline</i>",
             reply_markup=kb.share_button(
                 faculty_id=data["faculty_id"], group_id=data["group_id"]
             ),
@@ -185,26 +188,26 @@ async def handle_inline_timetable_callback(
         case _:
             pass
 
-    if user.group_id and user.faculty_id:
-        timetable = await get_timetable(
-            user=user, redis=redis, api=api, week=week, day=day
-        )
-
-        if not timetable:
-            await callback.message.edit_text(
-                "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+    with suppress(TelegramBadRequest):
+        if user.group_id and user.faculty_id:
+            timetable = await get_timetable(
+                user=user, redis=redis, api=api, week=week, day=day
             )
-            return
 
-        with suppress(TelegramBadRequest):
+            if not timetable:
+                await callback.message.edit_text(
+                    "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+                )
+                return
+
             await callback.message.edit_text(
                 text=timetable,
                 reply_markup=kb.inline_timetable_keyboard(day=day, week=week),
             )
-    else:
-        await callback.message.edit_text(
-            text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
-        )
+        else:
+            await callback.message.edit_text(
+                text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
+            )
 
     await callback.answer()
 
@@ -218,8 +221,7 @@ async def get_timetable(
         status, timetable_response = await api.get_group_timetable(
             group_id=user.group_id
         )
-        if status != 200:
-
+        if status != 200 or not timetable_response:
             return
         timetable_list = timetable_message_generator(
             timetable=timetable_response,
