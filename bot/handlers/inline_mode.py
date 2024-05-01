@@ -25,7 +25,7 @@ async def handle_inline_query(
         faculties = json.loads(faculties_redis)
     else:
         response, faculties = await api.get_faculties()
-        if response != 200:
+        if response != 200 or not faculties:
             return
         await redis.set("faculties", json.dumps(faculties), ex=1800)
 
