@@ -101,8 +101,9 @@ def week_scrap(this_week: list) -> dict:
 
         for lesson in lessons:
 
-            lesson_name = lesson.find_all(
+            raw_lesson_name = lesson.find_all(
                 string=True, recursive=False)  # Назвния уроков
+            lesson_name = [lname for lname in raw_lesson_name if lname != ' ']
             if len(lesson_name) == 0:  # WTF
                 continue  # А, точно! Там же пустые уроки бывают!
 
