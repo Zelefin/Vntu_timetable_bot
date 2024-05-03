@@ -25,25 +25,45 @@ user_router = Router()
 async def user_start(message: Message, state: FSMContext, user: User):
     await state.clear()
     if user.faculty_id:
-        await message.answer(
-            text=f"Вітаю, {message.from_user.first_name}!\n"
-            "Цього бота було створено для зручного перегляду розкладу.\n\n"
-            "Ваші данні:\n"
-            f" > Група: <b>{user.group_name}</b>\n"
-            + (f" > Підгрупа: <b>{user.subgroup}</b>" if user.subgroup else ""),
+        await message.answer_photo(
+            photo="AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ",
+            caption="""
+Вітаю!👋
+Канал з оновленнями: @vntu_timetable_bot_news
+
+📲 Переглядайте розклад будь-якої групи будь-якого факультету у зручному <b>Web App</b>.
+
+👥 Переглядайте розклад Вашої групи (та підгрупи) як повідомлення при команді <i>/inline</i>.
+
+ℹ️ Ваша інформація:
+    > Група: <i>6ПІ-23б</i>"""
+            + (
+                f"\n    > Підгрупа: <i>{user.subgroup} Підгрупа</i>"
+                if user.subgroup
+                else ""
+            ) + """
+👇<b>Кнопка!!</b>
+            """,
             reply_markup=kb.start_keyboard(reg=True),
         )
     else:
-        await message.answer(
-            text=f"Вітаю, {message.from_user.first_name}!\nЦього бота було створено для зручного перегляду розкладу. "
-            f'Натисніть на кнопку "Зареєструватись", щоб отримати розклад для вашої групи.',
+        await message.answer_photo(
+            photo="AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ",
+            caption="""
+Вітаю!👋
+📣 Приєднуйтесь до каналу з оновленнями: @vntu_timetable_bot_news
+
+📲 Переглядайте розклад будь-якої групи будь-якого факультету у зручному <b>Web App</b>.
+
+👥 Переглядайте розклад Вашої групи (та підгрупи) як повідомлення при команді <i>/inline</i>.""",
             reply_markup=kb.start_keyboard(reg=False),
         )
 
 
 @user_router.callback_query(F.data == "reg_or_upd")
 async def reg_or_upd_data(callback: CallbackQuery, state: FSMContext):
-    await callback.message.edit_text(text="Введіть назву вашої групи:")
+    await callback.message.delete()
+    await callback.message.answer(text="Введіть назву вашої групи:")
     await state.set_state(RegistrationState.group)
 
 
@@ -215,7 +235,7 @@ async def handle_inline_timetable_callback(
 async def get_timetable(
     user: User, redis: Redis, api: VntuTimetableApi, week: str, day: int
 ) -> str | None:
-    if timetable_list := await redis.get(str(user.group_id)):
+    if timetable_list := await redis.get(str(user.group_id) + str(user.subgroup)):
         timetable = json.loads(timetable_list)[week][day]
     else:
         status, timetable_response = await api.get_group_timetable(
@@ -228,7 +248,7 @@ async def get_timetable(
             group_name=user.group_name,
             subgroup=user.subgroup,
         )
-        await redis.set(str(user.group_id), json.dumps(timetable_list), ex=1800)
+        await redis.set(str(user.group_id) + str(user.subgroup), json.dumps(timetable_list), ex=1800)
         timetable = timetable_list[week][day]
 
     return timetable
