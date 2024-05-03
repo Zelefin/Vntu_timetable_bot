@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 import betterlogging as bl
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 
@@ -84,6 +84,8 @@ async def main():
     dp = Dispatcher(storage=storage)
     dp["api"] = api
     dp["redis"] = storage.redis
+
+    dp.message.filter(F.chat.type == "private")
 
     dp.include_routers(*routers_list)
 
