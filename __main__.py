@@ -84,6 +84,7 @@ async def main():
     dp = Dispatcher(storage=storage)
     dp["api"] = api
     dp["redis"] = storage.redis
+    dp["bot_username"] = config.bot.username
 
     dp.message.filter(F.chat.type == "private")
 
