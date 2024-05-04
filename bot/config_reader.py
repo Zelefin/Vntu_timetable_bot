@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 
 class Bot(BaseSettings):
     token: str
+    username: str
 
 
 class Postgres(BaseSettings):
@@ -38,6 +39,6 @@ class Config(BaseSettings):
         env_nested_delimiter = "_"
 
 
-def load_config(env_file=".env") -> Config:
+def load_config(env_file="../.env") -> Config:
     config = Config(_env_file=env_file)
     return config
