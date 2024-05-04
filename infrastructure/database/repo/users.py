@@ -13,7 +13,8 @@ class UserRepo(BaseRepo):
         username: str | None = None,
     ) -> User:
         """
-        Creates or updates a new user in the database and returns the user object.
+        Creates or updates a new user in the database and returns the user object. If this method called
+        it automatically sets "active" to True.
         :param user_id: The user's ID.
         :param full_name: The user's full name.
         :param username: The user's username. It's an optional parameter.
