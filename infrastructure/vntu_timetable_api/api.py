@@ -11,24 +11,14 @@ class VntuTimetableApi(BaseClient):
 
     async def get_faculties(self) -> tuple[int, dict[str, Any]]:
         try:
-            status, faculties = await self._make_request(
-                method="get", url="/v0/faculties"
-            )
-            await self.close()
-            return status, faculties
+            return await self._make_request(method="get", url="/v0/faculties")
         except Exception as e:
             logging.error(e)
-            await self.close()
             return 0, {}
 
-    async def get_group_timetable(self, group_id: int):
+    async def get_group_timetable(self, group_id: int) -> tuple[int, dict[str, Any]]:
         try:
-            status, group_timetable = await self._make_request(
-                method="get", url=f"/v0/groups/{group_id}"
-            )
-            await self.close()
-            return status, group_timetable
+            return await self._make_request(method="get", url=f"/v0/groups/{group_id}")
         except Exception as e:
             logging.error(e)
-            await self.close()
             return 0, {}
