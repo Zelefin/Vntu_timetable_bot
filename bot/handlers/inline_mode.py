@@ -1,6 +1,6 @@
 import json
 
-from aiogram import Router, Bot, F
+from aiogram import Router, F
 from aiogram.types import (
     InlineQuery,
     InlineQueryResultArticle,
@@ -16,10 +16,9 @@ inline_mode_router = Router()
 
 @inline_mode_router.inline_query(F.query.regexp(r"^\d+\_\d+$"))
 async def handle_inline_query(
-    inline_query: InlineQuery, bot: Bot, api: VntuTimetableApi, redis: Redis
+    inline_query: InlineQuery, api: VntuTimetableApi, redis: Redis, bot_username: str
 ):
     faculty_id, group_id = [int(value) for value in inline_query.query.split("_")]
-    bot_info = await bot.get_me()
 
     if faculties_redis := await redis.get("faculties"):
         faculties = json.loads(faculties_redis)
@@ -41,10 +40,10 @@ async def handle_inline_query(
             InlineQueryResultArticle(
                 id="share_article",
                 title="Натисніть тут щоб поділитися!",
-                description=f"Поділіться зручним Web App для перегляду розкладу групи {group_name}",
+                description=f"Поділіться Web App для перегляду розкладу групи {group_name}",
                 input_message_content=InputTextMessageContent(
                     message_text=f"<b>Розклад для групи "
-                    f"<a href='https://t.me/{bot_info.username}/timetable?startapp={faculty_id}_{group_id}'>"
+                    f"<a href='https://t.me/{bot_username}/timetable?startapp={faculty_id}_{group_id}'>"
                     f"{group_name}</a></b>"
                 ),
                 reply_markup=share_button(faculty_id=faculty_id, group_id=group_id),
@@ -54,4 +53,4 @@ async def handle_inline_query(
     else:
         answer = []
 
-    return inline_query.answer(answer)
+    return inline_query.answer(answer, cache_time=86400)
