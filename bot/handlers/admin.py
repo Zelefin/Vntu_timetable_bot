@@ -13,11 +13,6 @@ admin_router = Router()
 admin_router.message.filter(AdminFilter())
 
 
-@admin_router.message(Command("admin"))
-async def admin_start(message: Message):
-    await message.reply("Вітаю, адміне!")
-
-
 @admin_router.message(Command("mailing"))
 async def mailing(message: Message, state: FSMContext):
     await message.answer("Уведіть текст для розсилки")
@@ -28,7 +23,7 @@ async def mailing(message: Message, state: FSMContext):
 async def text_for_mailing(message: Message, state: FSMContext):
     await message.answer(text=message.html_text)
     await message.answer(
-        text="👆Я розішлю усім це повідомлення", reply_markup=yes_no_keyboard()
+        text="👆 Я розішлю усім це повідомлення", reply_markup=yes_no_keyboard()
     )
     await state.set_data({"text": message.html_text})
     await state.set_state(MailingState.confirmation)
