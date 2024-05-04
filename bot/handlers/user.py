@@ -2,7 +2,7 @@ import json
 import logging
 from contextlib import suppress
 
-from aiogram import Router, F, Bot
+from aiogram import Router, F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
@@ -22,40 +22,55 @@ user_router = Router()
 
 
 @user_router.message(CommandStart())
-async def user_start(message: Message, state: FSMContext, user: User):
+async def user_start(
+    message: Message, state: FSMContext, user: User, bot_username: str
+):
     await state.clear()
     if user.faculty_id:
         await message.answer_photo(
-            photo="AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ",
-            caption="""
+            photo=(
+                "AgACAgIAAxkBAAEBaCRmNTeMhHxX0QhmGYfPFo5z0FnwnQACm9wxG2zuoEmaIkh9lfC6oQEAAwIAA3gAAzQE"
+                if bot_username == "vntu_timetable_bot"
+                else "AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ"
+            ),
+            caption=f"""
 Вітаю!👋
-Канал з оновленнями: @vntu_timetable_bot_news
+Канал з оновленнями бота: @vntu_timetable_bot_news
 
-📲 Переглядайте розклад будь-якої групи будь-якого факультету у зручному <b>Web App</b>.
+📲 Переглядайте розклад будь-якої групи будь-якого факультету у <b>Web App</b>.
 
 👥 Переглядайте розклад Вашої групи (та підгрупи) як повідомлення при команді <i>/inline</i>.
 
 ℹ️ Ваша інформація:
-    > Група: <i>6ПІ-23б</i>"""
+    > Група: <code>{user.group_name}</code>"""
             + (
-                f"\n    > Підгрупа: <i>{user.subgroup} Підгрупа</i>"
+                f"\n    > Підгрупа: <code>{user.subgroup} Підгрупа</code>"
                 if user.subgroup
                 else ""
-            ) + """
-👇<b>Кнопка!!</b>
+            )
+            + """
+
+<b>Тисніть щоб оновити інформацію про себе</b>👇
             """,
             reply_markup=kb.start_keyboard(reg=True),
         )
     else:
         await message.answer_photo(
-            photo="AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ",
+            photo=(
+                "AgACAgIAAxkBAAEBaCRmNTeMhHxX0QhmGYfPFo5z0FnwnQACm9wxG2zuoEmaIkh9lfC6oQEAAwIAA3gAAzQE"
+                if bot_username == "vntu_timetable_bot"
+                else "AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ"
+            ),
             caption="""
 Вітаю!👋
-📣 Приєднуйтесь до каналу з оновленнями: @vntu_timetable_bot_news
+Канал з оновленнями бота: @vntu_timetable_bot_news
 
-📲 Переглядайте розклад будь-якої групи будь-якого факультету у зручному <b>Web App</b>.
+📲 Переглядайте розклад будь-якої групи будь-якого факультету у <b>Web App</b>.
 
-👥 Переглядайте розклад Вашої групи (та підгрупи) як повідомлення при команді <i>/inline</i>.""",
+👥 Переглядайте розклад Вашої групи (та підгрупи) як повідомлення при команді <i>/inline</i>.
+
+<b>Зареєструйтесь і отримайте доступ до усього функціоналу бота</b>👇
+""",
             reply_markup=kb.start_keyboard(reg=False),
         )
 
@@ -63,7 +78,10 @@ async def user_start(message: Message, state: FSMContext, user: User):
 @user_router.callback_query(F.data == "reg_or_upd")
 async def reg_or_upd_data(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
-    await callback.message.answer(text="Введіть назву вашої групи:")
+    await callback.message.answer(
+        text="Введіть назву вашої групи, наприклад: <code>6ПІ-23б</code>,"
+        " <code>КІВТ-23м</code>, <code>133-23a</code>"
+    )
     await state.set_state(RegistrationState.group)
 
 
@@ -104,9 +122,8 @@ async def handle_group_msg(
 
 @user_router.callback_query(RegistrationState.subgroup, F.data.in_(["0", "1", "2"]))
 async def handle_subgroup_callback(
-    callback: CallbackQuery, state: FSMContext, repo: RequestsRepo, bot: Bot
+    callback: CallbackQuery, state: FSMContext, repo: RequestsRepo, bot_username: str
 ):
-    bot_info = await bot.get_me()
     data = await state.get_data()
     try:
         await repo.users.update_user_faculty_and_group(
@@ -117,9 +134,9 @@ async def handle_subgroup_callback(
             subgroup=int(callback.data),
         )
         await callback.message.edit_text(
-            text="<i>Ваші данні було успішно збережено!</i>\n\n"
+            text="<i>Ваші дані було успішно збережено!</i>\n\n"
             f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
-            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
+            f"<a href='https://t.me/{bot_username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
             "Web App</a>"
             " або як повідомлення при команді <i>/inline</i>",
             reply_markup=kb.share_button(
@@ -133,14 +150,13 @@ async def handle_subgroup_callback(
 
 
 @user_router.message(Command("timetable"))
-async def timetable_app(message: Message, user: User, bot: Bot):
-    bot_info = await bot.get_me()
+async def timetable_app(message: Message, user: User, bot_username: str):
     if user.group_id and user.faculty_id:
         # It's kinda makes no sense, because we can't have faculty id w/o group id, but Pycharm will raise warning
         # Expected type 'int | str', got 'InstrumentedAttribute[_T_co]' instead (if we check only group or faculty)
         await message.answer(
             text=f"<b>Розклад для групи "
-            f"<a href='https://t.me/{bot_info.username}/timetable?startapp={user.faculty_id}_{user.group_id}'>"
+            f"<a href='https://t.me/{bot_username}/timetable?startapp={user.faculty_id}_{user.group_id}'>"
             f"{user.group_name}</a></b>",
             reply_markup=kb.share_button(
                 faculty_id=user.faculty_id, group_id=user.group_id
@@ -248,7 +264,9 @@ async def get_timetable(
             group_name=user.group_name,
             subgroup=user.subgroup,
         )
-        await redis.set(str(user.group_id) + str(user.subgroup), json.dumps(timetable_list), ex=1800)
+        await redis.set(
+            str(user.group_id) + str(user.subgroup), json.dumps(timetable_list), ex=1800
+        )
         timetable = timetable_list[week][day]
 
     return timetable
