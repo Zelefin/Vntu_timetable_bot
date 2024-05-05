@@ -19,6 +19,11 @@ async def on_startup(bot: Bot, admin_id: int):
     await broadcaster.broadcast(bot, [admin_id], "Бот був запущений")
 
 
+async def on_shutdown(api: VntuTimetableApi, bot: Bot, admin_id: int):
+    await broadcaster.broadcast(bot, [admin_id], "Бот був вимкнений")
+    await api.close()
+
+
 def register_global_middlewares(dp: Dispatcher, config: Config, session_pool=None):
     """
     Register global middlewares for the given dispatcher.
@@ -85,6 +90,7 @@ async def main():
     dp["api"] = api
     dp["redis"] = storage.redis
     dp["bot_username"] = config.bot.username
+    dp["admin_id"] = config.admin
 
     dp.message.filter(F.chat.type == "private")
 
@@ -92,7 +98,8 @@ async def main():
 
     register_global_middlewares(dp, config, session_pool)
 
-    await on_startup(bot, config.admin)
+    dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
