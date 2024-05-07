@@ -12,7 +12,6 @@ async def send_message(
     bot: Bot,
     user_id: int | str,
     text: str,
-    disable_notification: bool = False,
     reply_markup: InlineKeyboardMarkup = None,
 ) -> bool:
     """
@@ -21,7 +20,6 @@ async def send_message(
     :param bot: Bot instance.
     :param user_id: user id. If str - must contain only digits.
     :param text: text of the message.
-    :param disable_notification: disable notification or not.
     :param reply_markup: reply markup.
     :return: success.
     """
@@ -29,7 +27,6 @@ async def send_message(
         await bot.send_message(
             user_id,
             text,
-            disable_notification=disable_notification,
             reply_markup=reply_markup,
         )
     except exceptions.TelegramBadRequest:
@@ -43,9 +40,7 @@ async def send_message(
             e.retry_after,
         )
         await asyncio.sleep(e.retry_after)
-        return await send_message(
-            bot, user_id, text, disable_notification, reply_markup
-        )  # Recursive call
+        return await send_message(bot, user_id, text, reply_markup)  # Recursive call
     except exceptions.TelegramAPIError:
         logging.exception("Target [ID:%i]: failed", user_id)
     else:
@@ -58,7 +53,6 @@ async def broadcast(
     bot: Bot,
     users: list[str | int],
     text: str,
-    disable_notification: bool = False,
     reply_markup: InlineKeyboardMarkup = None,
     repo: RequestsRepo | None = None,
 ) -> int:
@@ -67,7 +61,6 @@ async def broadcast(
     :param bot: Bot instance.
     :param users: List of users.
     :param text: Text of the message.
-    :param disable_notification: Disable notification or not.
     :param reply_markup: Reply markup.
     :param repo: Database repository.
     :return: Count of messages.
@@ -75,9 +68,7 @@ async def broadcast(
     count = 0
     try:
         for user_id in users:
-            if await send_message(
-                bot, user_id, text, disable_notification, reply_markup
-            ):
+            if await send_message(bot, user_id, text, reply_markup):
                 count += 1
             else:
                 if repo:
