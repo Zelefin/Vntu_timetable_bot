@@ -13,6 +13,7 @@ from bot.misc.callback_data import InlineCallbackFactory
 from bot.misc.current_date import current_day, current_week
 from bot.misc.states import RegistrationState
 from bot.misc.timetable_message import timetable_message_generator
+from bot.misc.user_faculty_group_info import UserFacultyGroupInfo
 from infrastructure.database.models import User
 from infrastructure.database.repo.requests import RequestsRepo
 from infrastructure.vntu_timetable_api import VntuTimetableApi
@@ -122,10 +123,12 @@ async def handle_subgroup_callback(
     data = await state.get_data()
     await repo.users.update_user_faculty_and_group(
         user_id=callback.from_user.id,
-        faculty_id=data["faculty_id"],
-        group_id=data["group_id"],
-        group_name=data["group_name"],
-        subgroup=int(callback.data),
+        faculty_group_info=UserFacultyGroupInfo(
+            faculty_id=data["faculty_id"],
+            group_id=data["group_id"],
+            group_name=data["group_name"],
+            subgroup=int(callback.data),
+        ),
     )
 
     with suppress(TelegramBadRequest):

@@ -1,6 +1,7 @@
 from sqlalchemy import update, select
 from sqlalchemy.dialects.postgresql import insert
 
+from bot.misc.user_faculty_group_info import UserFacultyGroupInfo
 from infrastructure.database.models import User
 from infrastructure.database.repo.base import BaseRepo
 
@@ -47,27 +48,21 @@ class UserRepo(BaseRepo):
     async def update_user_faculty_and_group(
         self,
         user_id: int,
-        faculty_id: int,
-        group_id: int,
-        group_name: int,
-        subgroup: int,
+        faculty_group_info: UserFacultyGroupInfo,
     ) -> User:
         """
         :param user_id: The user's ID.
-        :param faculty_id: The user's faculty ID.
-        :param group_id: The user's group ID.
-        :param group_name: The user's group name.
-        :param subgroup: The user's subgroup.
+        :param faculty_group_info: user's faculty and group information.
         :return: User object, None if there was an error while making a transaction.
         """
         update_stmt = (
             update(User)
             .where(User.user_id == user_id)
             .values(
-                faculty_id=faculty_id,
-                group_id=group_id,
-                group_name=group_name,
-                subgroup=subgroup,
+                faculty_id=faculty_group_info.faculty_id,
+                group_id=faculty_group_info.group_id,
+                group_name=faculty_group_info.group_name,
+                subgroup=faculty_group_info.subgroup,
             )
         ).returning(User)
         result = await self.session.execute(update_stmt)
