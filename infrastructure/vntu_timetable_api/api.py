@@ -1,6 +1,8 @@
 import logging
 from typing import Any
 
+from aiohttp import ClientError
+
 from infrastructure.vntu_timetable_api.base import BaseClient
 
 
@@ -15,14 +17,16 @@ class VntuTimetableApi(BaseClient):
         """Method to get faculties data."""
         try:
             return await self.make_request(method="get", url="/v0/faculties")
-        except Exception as e:
-            logging.error(e)
+        except ClientError as ce:
+            logging.error("Error getting faculties: %s", ce)
             return 0, {}
 
     async def get_group_timetable(self, group_id: int) -> tuple[int, dict[str, Any]]:
         """Method to get group timetable data."""
         try:
             return await self.make_request(method="get", url=f"/v0/groups/{group_id}")
-        except Exception as e:
-            logging.error(e)
+        except ClientError as ce:
+            logging.error(
+                "Error getting group timetable: %s | Group id: %i", ce, group_id
+            )
             return 0, {}
