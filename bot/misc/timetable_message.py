@@ -72,8 +72,18 @@ def timetable_message_generator(
 
 def convert_lesson(lesson: dict) -> str:
     lesson_header = (
-        f"{lesson_number[lesson['num']]} ⎪ <i><b>{lesson['begin']} - {lesson['end']}</b></i> ⎪ "
-        f"{lesson_types.get(lesson['type']) if lesson_types.get(lesson['type']) else (lesson['type'] + '🟥')}\n"
+        f"{lesson_number[lesson['num']]} ⎪ <i>"
+        f"<b>{lesson['begin']} - {lesson['end']}</b></i> ⎪ "
+        + (
+            lesson_types.get(lesson["type"])
+            if lesson_types.get(lesson["type"])
+            else str(lesson["type"]) + "🟥"
+        )
+        + "\n"
     )
-    lesson_body = f"<b>┗ {lesson['name']}</b>\n💼 {lesson['teacher']['name']}\n🏫 {lesson['auditory']}\n"
+    lesson_body = (
+        f"<b>┗ {lesson['name']}</b>\n"
+        f"💼 {lesson['teacher']['name']}\n"
+        f"🏫 {lesson['auditory']}\n"
+    )
     return lesson_header + lesson_body

@@ -35,19 +35,21 @@ async def send_message(
     except exceptions.TelegramBadRequest:
         logging.error("Telegram server says - Bad Request: chat not found")
     except exceptions.TelegramForbiddenError:
-        logging.error(f"Target [ID:{user_id}]: got TelegramForbiddenError")
+        logging.error("Target [ID:%i]: got TelegramForbiddenError", user_id)
     except exceptions.TelegramRetryAfter as e:
         logging.error(
-            f"Target [ID:{user_id}]: Flood limit is exceeded. Sleep {e.retry_after} seconds."
+            "Target [ID:%i]: Flood limit is exceeded. Sleep %i seconds.",
+            user_id,
+            e.retry_after,
         )
         await asyncio.sleep(e.retry_after)
         return await send_message(
             bot, user_id, text, disable_notification, reply_markup
         )  # Recursive call
     except exceptions.TelegramAPIError:
-        logging.exception(f"Target [ID:{user_id}]: failed")
+        logging.exception("Target [ID:%i]: failed", user_id)
     else:
-        logging.info(f"Target [ID:{user_id}]: success")
+        logging.info("Target [ID:%i]: success", user_id)
         return True
     return False
 
@@ -84,6 +86,6 @@ async def broadcast(
                 0.05
             )  # 20 messages per second (Limit: 30 messages per second)
     finally:
-        logging.info(f"{count} messages successful sent.")
+        logging.info("%i messages successful sent.", count)
 
     return count

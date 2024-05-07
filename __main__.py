@@ -27,7 +27,8 @@ async def on_shutdown(api: VntuTimetableApi, bot: Bot, admin_id: int):
 def register_global_middlewares(dp: Dispatcher, config: Config, session_pool=None):
     """
     Register global middlewares for the given dispatcher.
-    Global middlewares here are the ones that are applied to all the handlers (you specify the type of update)
+    Global middlewares here are the ones that are applied
+    to all the handlers (you specify the type of update)
 
     :param dp: The dispatcher instance.
     :type dp: Dispatcher

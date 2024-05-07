@@ -1,10 +1,8 @@
-from typing import Optional
-
 from sqlalchemy import String
 from sqlalchemy import BIGINT, Boolean, true
 from sqlalchemy.orm import Mapped, mapped_column
 
-from .base import Base, TimestampMixin, TableNameMixin
+from infrastructure.database.models.base import Base, TimestampMixin, TableNameMixin
 
 
 class User(Base, TimestampMixin, TableNameMixin):
@@ -25,7 +23,8 @@ class User(Base, TimestampMixin, TableNameMixin):
         which provide additional attributes and functionality.
 
     Inherited Methods:
-        Inherits methods from Base, TimestampMixin, and TableNameMixin classes, which provide additional functionality.
+        Inherits methods from Base, TimestampMixin, and TableNameMixin classes,
+        which provide additional functionality.
 
     """
 

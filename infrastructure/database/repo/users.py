@@ -13,8 +13,8 @@ class UserRepo(BaseRepo):
         username: str | None = None,
     ) -> User:
         """
-        Creates or updates a new user in the database and returns the user object. If this method called
-        it automatically sets "active" to True.
+        Creates or updates a new user in the database and returns the user object.
+        If this method called it automatically sets "active" to True.
         :param user_id: The user's ID.
         :param full_name: The user's full name.
         :param username: The user's username. It's an optional parameter.
@@ -31,11 +31,11 @@ class UserRepo(BaseRepo):
             )
             .on_conflict_do_update(
                 index_elements=[User.user_id],
-                set_=dict(
-                    username=username,
-                    full_name=full_name,
-                    active=True,
-                ),
+                set_={
+                    "username": username,
+                    "full_name": full_name,
+                    "active": True,
+                },
             )
             .returning(User)
         )
@@ -77,11 +77,7 @@ class UserRepo(BaseRepo):
 
     async def all_users_ids(self) -> list[int]:
         return list(
-            (
-                await self.session.scalars(
-                    select(User.user_id).where(User.active == True)
-                )
-            ).all()
+            (await self.session.scalars(select(User.user_id).where(User.active))).all()
         )
 
     async def inactive_user(self, user_id: int):

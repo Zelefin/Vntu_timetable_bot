@@ -14,7 +14,10 @@ class Postgres(BaseSettings):
     password: str
 
     def make_connection_string(self) -> str:
-        result = f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+        result = (
+            f"postgresql+asyncpg://"
+            f"{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+        )
         return result
 
 

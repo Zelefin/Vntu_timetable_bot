@@ -1,5 +1,4 @@
 import json
-import logging
 from contextlib import suppress
 
 from aiogram import Router, F
@@ -25,14 +24,15 @@ user_router = Router()
 async def user_start(
     message: Message, state: FSMContext, user: User, bot_username: str
 ):
+    photo_file_id = (
+        "AgACAgIAAxkBAAEBaCRmNTeMhHxX0QhmGYfPFo5z0FnwnQACm9wxG2zuoEmaIkh9lfC6oQEAAwIAA3gAAzQE"
+        if bot_username == "vntu_timetable_bot"
+        else "AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ"
+    )
     await state.clear()
     if user.faculty_id:
         await message.answer_photo(
-            photo=(
-                "AgACAgIAAxkBAAEBaCRmNTeMhHxX0QhmGYfPFo5z0FnwnQACm9wxG2zuoEmaIkh9lfC6oQEAAwIAA3gAAzQE"
-                if bot_username == "vntu_timetable_bot"
-                else "AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ"
-            ),
+            photo=photo_file_id,
             caption=f"""
 Вітаю!👋
 Канал з оновленнями бота: @vntu_timetable_bot_news
@@ -56,11 +56,7 @@ async def user_start(
         )
     else:
         await message.answer_photo(
-            photo=(
-                "AgACAgIAAxkBAAEBaCRmNTeMhHxX0QhmGYfPFo5z0FnwnQACm9wxG2zuoEmaIkh9lfC6oQEAAwIAA3gAAzQE"
-                if bot_username == "vntu_timetable_bot"
-                else "AgACAgIAAxkBAAI672Yz819tnBGbLe4q-4PTjGAOxSifAAKb3DEbbO6gScb8iyCe5NWTAQADAgADeAADNAQ"
-            ),
+            photo=photo_file_id,
             caption="""
 Вітаю!👋
 Канал з оновленнями бота: @vntu_timetable_bot_news
@@ -116,8 +112,7 @@ async def handle_group_msg(
                 )
                 await state.set_state(RegistrationState.subgroup)
                 return
-    else:
-        await message.answer("Такої групи не знайдено. Спробуйте знову.")
+    await message.answer("Такої групи не знайдено. Спробуйте знову.")
 
 
 @user_router.callback_query(RegistrationState.subgroup, F.data.in_(["0", "1", "2"]))
@@ -125,38 +120,40 @@ async def handle_subgroup_callback(
     callback: CallbackQuery, state: FSMContext, repo: RequestsRepo, bot_username: str
 ):
     data = await state.get_data()
-    try:
-        await repo.users.update_user_faculty_and_group(
-            user_id=callback.from_user.id,
-            faculty_id=data["faculty_id"],
-            group_id=data["group_id"],
-            group_name=data["group_name"],
-            subgroup=int(callback.data),
-        )
+    await repo.users.update_user_faculty_and_group(
+        user_id=callback.from_user.id,
+        faculty_id=data["faculty_id"],
+        group_id=data["group_id"],
+        group_name=data["group_name"],
+        subgroup=int(callback.data),
+    )
+
+    with suppress(TelegramBadRequest):
         await callback.message.edit_text(
             text="<i>Ваші дані було успішно збережено!</i>\n\n"
             f"Ви можете переглянути розклад для <b>{data['group_name']}</b> у "
-            f"<a href='https://t.me/{bot_username}/timetable?startapp={data['faculty_id']}_{data['group_id']}'>"
+            f"<a href='https://t.me/{bot_username}/timetable"
+            f"?startapp={data['faculty_id']}_{data['group_id']}'>"
             "Web App</a>"
             " або як повідомлення при команді <i>/inline</i>",
             reply_markup=kb.share_button(
                 faculty_id=data["faculty_id"], group_id=data["group_id"]
             ),
         )
-    except Exception as e:
-        logging.error(e)
-        await callback.message.edit_text("Виникла помилка при збереженні данних🤕")
     await state.clear()
 
 
 @user_router.message(Command("timetable"))
 async def timetable_app(message: Message, user: User, bot_username: str):
     if user.group_id and user.faculty_id:
-        # It's kinda makes no sense, because we can't have faculty id w/o group id, but Pycharm will raise warning
-        # Expected type 'int | str', got 'InstrumentedAttribute[_T_co]' instead (if we check only group or faculty)
+        # It's kinda makes no sense, because we can't have faculty id w/o group id,
+        # but Pycharm will raise warning:
+        # Expected type 'int | str', got 'InstrumentedAttribute[_T_co]' instead
+        # (if we check only group or faculty)
         await message.answer(
             text=f"<b>Розклад для групи "
-            f"<a href='https://t.me/{bot_username}/timetable?startapp={user.faculty_id}_{user.group_id}'>"
+            f"<a href='https://t.me/{bot_username}/timetable"
+            f"?startapp={user.faculty_id}_{user.group_id}'>"
             f"{user.group_name}</a></b>",
             reply_markup=kb.share_button(
                 faculty_id=user.faculty_id, group_id=user.group_id
