@@ -43,7 +43,8 @@ async def handle_inline_query(
                 description=f"Поділіться Web App для перегляду розкладу групи {group_name}",
                 input_message_content=InputTextMessageContent(
                     message_text=f"<b>Розклад для групи "
-                    f"<a href='https://t.me/{bot_username}/timetable?startapp={faculty_id}_{group_id}'>"
+                    f"<a href='https://t.me/{bot_username}/timetable"
+                    f"?startapp={faculty_id}_{group_id}'>"
                     f"{group_name}</a></b>"
                 ),
                 reply_markup=share_button(faculty_id=faculty_id, group_id=group_id),
