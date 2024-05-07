@@ -18,4 +18,6 @@ class TableNameMixin:
 
 
 class TimestampMixin:
-    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        TIMESTAMP, server_default=func.now()  # pylint: disable=not-callable
+    )

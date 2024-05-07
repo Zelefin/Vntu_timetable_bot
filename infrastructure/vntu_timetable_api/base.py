@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import backoff
 from aiohttp import ClientError, ClientSession, TCPConnector
-from ujson import dumps, loads
+from ujson import dumps, loads  # pylint: disable=no-name-in-module
 
 if TYPE_CHECKING:
     from yarl import URL
