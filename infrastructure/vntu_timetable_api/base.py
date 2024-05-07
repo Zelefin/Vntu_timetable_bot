@@ -6,12 +6,10 @@ import ssl
 from typing import TYPE_CHECKING, Any
 
 import backoff
-from aiohttp import ClientError, ClientSession, TCPConnector, FormData
+from aiohttp import ClientError, ClientSession, TCPConnector
 from ujson import dumps, loads
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
-
     from yarl import URL
 
 
@@ -42,28 +40,20 @@ class BaseClient:
         ClientError,
         max_time=2.5,
     )
-    async def _make_request(
+    async def make_request(
         self,
         method: str,
         url: str | URL,
-        params: Mapping[str, str] | None = None,
-        json: Mapping[str, str] | None = None,
-        headers: Mapping[str, str] | None = None,
-        data: FormData | None = None,
     ) -> tuple[int, dict[str, Any]]:
         """Make request and return decoded json response."""
         session = await self._get_session()
 
         self.log.debug(
-            "Making request %r %r with json %r and params %r",
+            "Making request %r %r",
             method,
             url,
-            json,
-            params,
         )
-        async with session.request(
-            method, url, params=params, json=json, headers=headers, data=data
-        ) as response:
+        async with session.request(method, url) as response:
             status = response.status
             if status != 200:
                 s = await response.text()
@@ -72,7 +62,9 @@ class BaseClient:
                 result = await response.json(loads=loads)
             except Exception as e:
                 self.log.exception(e)
-                self.log.info(f"{await response.text()}")
+                self.log.info(
+                    "Got exception while loading json %r", await response.text()
+                )
                 result = {}
 
         self.log.debug(
