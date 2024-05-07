@@ -5,9 +5,6 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.functions import func
-from typing_extensions import Annotated
-
-int_pk = Annotated[int, mapped_column(primary_key=True)]
 
 
 class Base(DeclarativeBase):
@@ -16,8 +13,8 @@ class Base(DeclarativeBase):
 
 class TableNameMixin:
     @declared_attr.directive
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower() + "s"
+    def __tablename__(self) -> str:
+        return self.__name__.lower() + "s"
 
 
 class TimestampMixin:
