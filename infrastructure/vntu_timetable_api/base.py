@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import ssl
 from typing import TYPE_CHECKING, Any
@@ -59,8 +60,8 @@ class BaseClient:
                 s = await response.text()
                 raise ClientError(f"Got status {status} for {method} {url}: {s}")
             try:
-                result = await response.json(loads=loads)
-            except Exception as e:
+                result: dict = await response.json(loads=loads)
+            except json.JSONDecodeError as e:
                 self.log.exception(e)
                 self.log.info(
                     "Got exception while loading json %r", await response.text()
