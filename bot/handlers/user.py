@@ -139,9 +139,7 @@ async def handle_subgroup_callback(
             f"?startapp={data['faculty_id']}_{data['group_id']}'>"
             "Web App</a>"
             " або як повідомлення при команді <i>/inline</i>",
-            reply_markup=kb.share_button(
-                faculty_id=data["faculty_id"], group_id=data["group_id"]
-            ),
+            reply_markup=kb.share_button(group_name=data["group_name"]),
         )
     await state.clear()
 
@@ -158,9 +156,7 @@ async def timetable_app(message: Message, user: User, bot_username: str):
             f"<a href='https://t.me/{bot_username}/timetable"
             f"?startapp={user.faculty_id}_{user.group_id}'>"
             f"{user.group_name}</a></b>",
-            reply_markup=kb.share_button(
-                faculty_id=user.faculty_id, group_id=user.group_id
-            ),
+            reply_markup=kb.share_button(group_name=user.group_name),
         )
     else:
         await message.answer("Спочатку зареєструйтесь в боті командою <i>/start</i>")
@@ -245,7 +241,7 @@ async def handle_inline_timetable_callback(
                 text="Спочатку зареєструйтесь в боті командою <i>/start</i>"
             )
 
-    await callback.answer()
+        await callback.answer()
 
 
 async def get_timetable(
