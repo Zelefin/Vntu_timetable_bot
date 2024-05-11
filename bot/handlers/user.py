@@ -9,6 +9,7 @@ from aiogram.types import Message, CallbackQuery
 from redis.asyncio import Redis
 
 import bot.keyboards.user as kb
+from bot.handlers.common.faculties_groups import get_faculties, find_group
 from bot.misc.callback_data import InlineCallbackFactory
 from bot.misc.current_date import current_day, current_week
 from bot.misc.states import RegistrationState
@@ -86,33 +87,31 @@ async def reg_or_upd_data(callback: CallbackQuery, state: FSMContext):
 async def handle_group_msg(
     message: Message, state: FSMContext, api: VntuTimetableApi, redis: Redis
 ):
-    if faculties_redis := await redis.get("faculties"):
-        faculties = json.loads(faculties_redis)
-    else:
-        result, faculties = await api.get_faculties()
-        if result != 200 or not faculties:
-            await message.answer(
-                "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
-            )
-            await state.clear()
-            return
-        await redis.set("faculties", json.dumps(faculties), ex=1800)
+    faculties = await get_faculties(redis=redis, api=api)
+    if not faculties:
+        await message.answer(
+            "Виникла помилка при отриманні данних з API😖\nСпробуйте пізніше..."
+        )
+        await state.clear()
+        return
 
-    for faculty in faculties.get("data"):
-        for group in faculty["groups"]:
-            if group["name"].upper() == message.text.upper():
-                await state.set_data(
-                    {
-                        "faculty_id": faculty["id"],
-                        "group_id": group["id"],
-                        "group_name": group["name"],
-                    }
-                )
-                await message.answer(
-                    text="Оберіть вашу підгрупу:", reply_markup=kb.subgroups_keyboard()
-                )
-                await state.set_state(RegistrationState.subgroup)
-                return
+    faculty_id, group_id, group_name = find_group(
+        faculties=faculties, group_name=message.text
+    )
+
+    if faculty_id:
+        await state.set_data(
+            {
+                "faculty_id": faculty_id,
+                "group_id": group_id,
+                "group_name": group_name,
+            }
+        )
+        await message.answer(
+            text="Оберіть вашу підгрупу:", reply_markup=kb.subgroups_keyboard()
+        )
+        await state.set_state(RegistrationState.subgroup)
+        return
     await message.answer("Такої групи не знайдено. Спробуйте знову.")
 
 
