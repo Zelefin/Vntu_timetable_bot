@@ -1,4 +1,3 @@
-import json
 from contextlib import suppress
 
 from aiogram import Router, F
@@ -10,10 +9,10 @@ from redis.asyncio import Redis
 
 import bot.keyboards.user as kb
 from bot.handlers.common.faculties_groups import get_faculties, find_group
+from bot.handlers.common.timetable import get_timetable
 from bot.misc.callback_data import InlineCallbackFactory
 from bot.misc.current_date import current_day, current_week
 from bot.misc.states import RegistrationState
-from bot.misc.timetable_message import timetable_message_generator
 from bot.misc.user_faculty_group_info import UserFacultyGroupInfo
 from infrastructure.database.models import User
 from infrastructure.database.repo.requests import RequestsRepo
@@ -241,27 +240,3 @@ async def handle_inline_timetable_callback(
             )
 
         await callback.answer()
-
-
-async def get_timetable(
-    user: User, redis: Redis, api: VntuTimetableApi, week: str, day: int
-) -> str | None:
-    if timetable_list := await redis.get(str(user.group_id) + str(user.subgroup)):
-        timetable = json.loads(timetable_list)[week][day]
-    else:
-        status, timetable_response = await api.get_group_timetable(
-            group_id=user.group_id
-        )
-        if status != 200 or not timetable_response:
-            return
-        timetable_list = timetable_message_generator(
-            timetable=timetable_response,
-            group_name=user.group_name,
-            subgroup=user.subgroup,
-        )
-        await redis.set(
-            str(user.group_id) + str(user.subgroup), json.dumps(timetable_list), ex=1800
-        )
-        timetable = timetable_list[week][day]
-
-    return timetable

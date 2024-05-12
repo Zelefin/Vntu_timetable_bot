@@ -31,6 +31,14 @@ days_long_names = {
 def timetable_message_generator(
     timetable: dict, group_name: str, subgroup: int
 ) -> dict[str, list[str]]:
+    """
+    Converts timetable dictionary (as a response form API) to prettified dictionary.
+
+    :argument timetable: timetable dictionary (as a response form API).
+    :argument group_name: group name.
+    :argument subgroup: subgroup (0 or 1 or 2).
+    :returns Prettified dictionary with 1-st and 2-nd weeks. Only for specific subgroup.
+    """
     match subgroup:
         case 1:
             subgroup_text = ", 1 Підгрупа"
@@ -71,6 +79,7 @@ def timetable_message_generator(
 
 
 def convert_lesson(lesson: dict) -> str:
+    """Converts lesson from dict to prettified string"""
     lesson_header = (
         f"{lesson_number[lesson['num']]} ⎪ <i>"
         f"<b>{lesson['begin']} - {lesson['end']}</b></i> ⎪ "
