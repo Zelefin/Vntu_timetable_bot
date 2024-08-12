@@ -10,7 +10,7 @@ class VntuTimetableApi(BaseClient):
     """Class for making requests to VNTU Timetable API."""
 
     def __init__(self):
-        self.base_url = "https://vm4625529.25ssd.had.wf"
+        self.base_url = "https://vntu-timetable.zelefin.top"
         super().__init__(base_url=self.base_url)
 
     async def get_faculties(self) -> tuple[int, dict[str, Any]]:
