@@ -17,7 +17,7 @@ services:
     restart: always
     expose:
       - "6379"
-    command: redis-server
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "100mb", "--maxmemory-policy", "allkeys-lru"]
   bot:
     build: .
     command: sh -c "alembic upgrade head && python3 __main__.py"
