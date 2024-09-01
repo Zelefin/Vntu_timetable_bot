@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot.misc.callback_data import InlineCallbackFactory
 from bot.misc.current_date import current_week
 
-days = ["🔴", "Пн", "Вт", "Ср", "Чт", "Пт"]
+days = ["🔴", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
 
 
 def start_keyboard(reg: bool):
@@ -61,6 +61,10 @@ def inline_timetable_keyboard(day: int, week: str):
         text=days[5 if day != 4 else 0],
         callback_data=InlineCallbackFactory(day=4, week=week),
     )
+    kb.button(
+        text=days[6 if day != 5 else 0],
+        callback_data=InlineCallbackFactory(day=5, week=week),
+    )
 
     kb.button(
         text="Сьогодні🌆", callback_data=InlineCallbackFactory(day=-1, week=cur_week)
@@ -76,5 +80,5 @@ def inline_timetable_keyboard(day: int, week: str):
         ),
     )
 
-    kb.adjust(5, 2, 1)
+    kb.adjust(6, 2, 1)
     return kb.as_markup()
