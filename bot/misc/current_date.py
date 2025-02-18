@@ -4,7 +4,7 @@ import datetime
 def current_week() -> str:
     return (
         "firstWeek"
-        if datetime.date.isocalendar(datetime.date.today())[1] % 2 != 0
+        if datetime.date.isocalendar(datetime.date.today())[1] % 2 == 0
         else "secondWeek"
     )
 
